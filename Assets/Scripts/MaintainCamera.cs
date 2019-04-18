@@ -7,7 +7,7 @@ public class MaintainCamera : MonoBehaviour {
 
     public GameObject FoveRigPrefab;
     public static Camera cam;
-
+    
 
     // Use this for initialization
     private void Awake()
