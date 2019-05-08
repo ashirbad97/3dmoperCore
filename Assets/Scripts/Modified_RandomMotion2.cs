@@ -31,6 +31,7 @@ public class Modified_RandomMotion2 : MonoBehaviour
         else
         {
             //Debug.Log("I am in else condition");
+            ReadXY.trialNumber = ReadXY.trialNumber + 1;
             SceneManager.LoadScene("Menu");
         }
 	}

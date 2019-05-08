@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 11
-  m_GIWorkflowMode: 0
+  m_GIWorkflowMode: 1
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -89,7 +89,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000002, guid: 21061433fb9b5e5498f8d25b5f7c375a,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -310,7 +311,7 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
@@ -391,7 +392,7 @@ Camera:
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
   m_TargetEye: 3
-  m_HDR: 1
+  m_HDR: 0
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
@@ -503,6 +504,16 @@ Prefab:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114000010313761880, guid: 042142d01b081ab4ca555ec74a04c2cb,
+        type: 2}
+      propertyPath: position
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114000010313761880, guid: 042142d01b081ab4ca555ec74a04c2cb,
+        type: 2}
+      propertyPath: orientation
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 042142d01b081ab4ca555ec74a04c2cb, type: 2}
   m_IsPrefabParent: 0
@@ -514,17 +525,6 @@ GameObject:
 --- !u!4 &566555931 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000013084846212, guid: 042142d01b081ab4ca555ec74a04c2cb,
-    type: 2}
-  m_PrefabInternal: {fileID: 566555929}
---- !u!114 &566555932 stripped
-MonoBehaviour:
-  m_PrefabParentObject: {fileID: 114000010313761880, guid: 042142d01b081ab4ca555ec74a04c2cb,
-    type: 2}
-  m_PrefabInternal: {fileID: 566555929}
-  m_Script: {fileID: 11500000, guid: e3d58959627074d4a9a4e2b06f2c7731, type: 3}
---- !u!20 &566555933 stripped
-Camera:
-  m_PrefabParentObject: {fileID: 20000013469000644, guid: 042142d01b081ab4ca555ec74a04c2cb,
     type: 2}
   m_PrefabInternal: {fileID: 566555929}
 --- !u!1 &829361291
@@ -591,7 +591,7 @@ Canvas:
   m_Enabled: 1
   serializedVersion: 3
   m_RenderMode: 2
-  m_Camera: {fileID: 566555933}
+  m_Camera: {fileID: 0}
   m_PlaneDistance: 100
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
@@ -651,7 +651,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50e132b3bc6e69440bca0116e003ef98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  foveInterface: {fileID: 566555932}
+  foveInterface: {fileID: 0}
 --- !u!23 &1190786974
 MeshRenderer:
   m_ObjectHideFlags: 0

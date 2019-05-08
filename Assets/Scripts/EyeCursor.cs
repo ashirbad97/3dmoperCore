@@ -26,9 +26,11 @@ public class EyeCursor : MonoBehaviour
         FoveInterface.EyeRays rays = foveInterface.GetGazeRays(); //Get a set of Unity Ray objects which describe where in the scene each of the user's eyes are looking.
         //FoveInterface.EyeRays rays = FoveInterface.GetEyeRays(); 
         // TODO: calculate the convergence point in FoveInterface
-
+        FoveInterfaceBase.GazeConvergenceData gazeData = FoveInterface.GetGazeConvergence();
+        transform.position = gazeData.ray.GetPoint(gazeData.distance) * 100;
+        Debug.Log("Gaze position:" + transform.position + " accuracy:" + gazeData.accuracy);
         // Using left eye only in this script
-        RaycastHit hit; // Initialize a structure that gets information back from a raycast
+        /*RaycastHit hit; // Initialize a structure that gets information back from a raycast
         if (right) //this is false, so the left eye ray is used. 
         {
             Physics.Raycast(rays.right, out hit, Mathf.Infinity); //Casts a ray from origin i.e. rays.right, in the direction "hit", of length infinity, against all colliders in the scene
@@ -45,7 +47,7 @@ public class EyeCursor : MonoBehaviour
         else
         {
             transform.position = rays.left.GetPoint(10.0f); //Returns a point at 10 units along the left eye ray.
-        }
+        }*/
     }
 }
 

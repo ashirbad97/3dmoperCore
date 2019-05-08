@@ -11,6 +11,7 @@ public class ReadXY : MonoBehaviour
 	public float[] posx;
 	public float[] posy;
     public float[] posz; //New addition
+    static public int trialNumber = 1;
 	
 	// Use this for initialization
 	void Awake () //Awake is used to initialize variables before game starts. Called only once
@@ -26,7 +27,7 @@ public class ReadXY : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         int buildIndex = currentScene.buildIndex;
         string path = null;
-        switch (buildIndex)
+        switch (trialNumber)
         {
             case 1:
                 //path = "Assets/Scripts/xposdir3d_new.txt"; //For the directionality expt
