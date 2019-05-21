@@ -11,7 +11,7 @@ public class ReadXY : MonoBehaviour
 	public float[] posx;
 	public float[] posy;
     public float[] posz; //New addition
-    static public int trialNumber = 1;
+    static public int trialNumber = 1; // Created a static variable for any other functions to use
 	
 	// Use this for initialization
 	void Awake () //Awake is used to initialize variables before game starts. Called only once
@@ -31,10 +31,22 @@ public class ReadXY : MonoBehaviour
         {
             case 1:
                 //path = "Assets/Scripts/xposdir3d_new.txt"; //For the directionality expt
-                path = "Assets/Scripts/x_pos_fove.txt"; // For the 20 second experiment
+                path = "Assets/Scripts/x_pos_fove2.txt"; // For the 20 second experiment
                 break;
             case 2:
-                path = "Assets/Scripts/x_pos_fove1.txt";
+                path = "Assets/Scripts/x_pos_fove2.txt";
+                break;
+            case 3:
+                path = "Assets/Scripts/x_pos_fove3.txt";
+                break;
+            case 4:
+                path = "Assets/Scripts/x_pos_fove4.txt";
+                break;
+            case 5:
+                path = "Assets/Scripts/x_pos_fove5.txt";
+                break;
+            case 6:
+                path = "Assets/Scripts/x_pos_fove6.txt";
                 break;
         } 
         //string path = "Assets/Scripts/x_pos_fove.txt";
@@ -60,14 +72,26 @@ public class ReadXY : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         int buildIndex = currentScene.buildIndex;
         string path = null;
-        switch (buildIndex)
+        switch (trialNumber)
         {
             case 1:
                 //path = "Assets/Scripts/yposdir3d_new.txt"; //For the directionality expt
-                path = "Assets/Scripts/y_pos_fove.txt"; // For the 20 second experiment
+                path = "Assets/Scripts/y_pos_fove2.txt"; // For the 20 second experiment
                 break;
             case 2:
-                path = "Assets/Scripts/y_pos_fove1.txt";
+                path = "Assets/Scripts/y_pos_fove2.txt";
+                break;
+            case 3:
+                path = "Assets/Scripts/y_pos_fove3.txt";
+                break;
+            case 4:
+                path = "Assets/Scripts/y_pos_fove4.txt";
+                break;
+            case 5:
+                path = "Assets/Scripts/y_pos_fove5.txt";
+                break;
+            case 6:
+                path = "Assets/Scripts/y_pos_fove6.txt";
                 break;
         }
 
@@ -94,14 +118,26 @@ public class ReadXY : MonoBehaviour
         Scene currentScene = SceneManager.GetActiveScene();
         int buildIndex = currentScene.buildIndex;
         string path = null;
-        switch (buildIndex)
+        switch (trialNumber)
         {
             case 1:
                 //path = "Assets/Scripts/zposdir3d_new.txt"; //For the directionality expt
-                path = "Assets/Scripts/z_pos_fove.txt"; //For the 20 second experiment
+                path = "Assets/Scripts/z_pos_fove2.txt"; //For the 20 second experiment
                 break;
             case 2:
-                path = "Assets/Scripts/z_pos_fove1.txt";
+                path = "Assets/Scripts/z_pos_fove2.txt";
+                break;
+            case 3:
+                path = "Assets/Scripts/z_pos_fove3.txt";
+                break;
+            case 4:
+                path = "Assets/Scripts/z_pos_fove4.txt";
+                break;
+            case 5:
+                path = "Assets/Scripts/z_pos_fove5.txt";
+                break;
+            case 6:
+                path = "Assets/Scripts/z_pos_fove6.txt";
                 break;
         }
 

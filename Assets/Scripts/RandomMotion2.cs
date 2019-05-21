@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine; // these are namespaces
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 
 public class RandomMotion2 : MonoBehaviour /*This means RandomMotion2 class is inheriting from MonoBehaviour class.
@@ -9,7 +10,7 @@ public class RandomMotion2 : MonoBehaviour /*This means RandomMotion2 class is i
     namespace. */
 {
 	
-	public ReadXY readxy; // Call the method to read position values. This has to be public so that
+	public ReadXY readxy; // Call the method to read position values. This has to be public so that u can attach to the sphere
     //public float scale;
     public float scale = 10; //These are fields
     public int counter;
@@ -31,7 +32,7 @@ public class RandomMotion2 : MonoBehaviour /*This means RandomMotion2 class is i
 	} 
 	
 	// Update is called once per frame
-	void Update ()
+	void FixedUpdate ()
     {
         if (UpdateOn == true)
         {
@@ -42,7 +43,10 @@ public class RandomMotion2 : MonoBehaviour /*This means RandomMotion2 class is i
         }
         else
         {
+            SceneManager.LoadScene("Menu");
             StopAllCoroutines();
+            EditorApplication.isPlaying = false;
+            
         }
        
             //counter = counter % 1400;
@@ -53,7 +57,7 @@ public class RandomMotion2 : MonoBehaviour /*This means RandomMotion2 class is i
 
     IEnumerator BallPlacer()
     {
-        if (counter<1401)
+        if (counter<1401) //1401 for 20 second ka expt; 71 for 3D directionality experiment
         {
             this.transform.position = new Vector3(readxy.posx[counter], readxy.posy[counter],
                 readxy.posz[counter]);
@@ -65,6 +69,7 @@ public class RandomMotion2 : MonoBehaviour /*This means RandomMotion2 class is i
         {
             EditorApplication.isPlaying = false;
             UpdateOn = false;
+            
         }
     }
 }

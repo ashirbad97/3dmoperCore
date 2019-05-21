@@ -8,6 +8,7 @@ public class RizCalibSequence : MonoBehaviour
 {
     public FoveInterface foveInterface;
     bool down = false;
+    bool hotKey = false;
 
     // Use this for initialization
     void Start ()
@@ -35,7 +36,11 @@ public class RizCalibSequence : MonoBehaviour
         if (down)
         {
             FoveInterface.EnsureEyeTrackingCalibration(); //Call the calibration routine
-            SceneManager.LoadScene("Menu");
+            hotKey = true;
+            if (hotKey)
+            {
+                SceneManager.LoadScene("Menu");
+            }
             //RaycastHit hit;
             //Ray ray = new Ray(foveInterface.transform.position, foveInterface.transform.forward);
             //if (Physics.Raycast(ray, out hit, 20.0f))

@@ -25,7 +25,7 @@ public class Modified_RandomMotion2 : MonoBehaviour
         {
             this.transform.position = new Vector3(readxy.posx[counter], readxy.posy[counter],
                 readxy.posz[counter]);
-            Debug.Log(this.transform.position);
+            //Debug.Log(this.transform.position);
             counter++;
         }
         else
