@@ -14,8 +14,6 @@ public class LookAtObject : MonoBehaviour
     //public GameObject progressBar; Disabled for now. See backup file for details. 
     //public GameObject myCanvas;
     //Color tempColor;
-    bool startbuttonActive = false;
-    bool quitbuttonActive = false;
 
     // Use this for initialization
     void Start()
@@ -24,7 +22,6 @@ public class LookAtObject : MonoBehaviour
         //progressBar.SetActive(true);
         //fi = foveInterfaceGo.GetComponent<FoveInterface>();
         //progressBar.SetActive(false);
-
     }
 
     // Update is called once per frame
@@ -32,34 +29,13 @@ public class LookAtObject : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            startbuttonActive = true;
+            SceneManager.UnloadSceneAsync("Menu");
+            SceneManager.LoadScene("Stimulus", LoadSceneMode.Additive);
         }
-
-        if (startbuttonActive)
-        {
-            //Scene currentScene = SceneManager.GetActiveScene();
-            //int buildIndex = currentScene.buildIndex;
-            SceneManager.LoadScene("Stimulus");
-        }
-
-        if (Input.GetKeyUp(KeyCode.Space))
-        {
-            startbuttonActive = false;
-        }
-
         if (Input.GetKeyDown(KeyCode.Q))
-        {
-            quitbuttonActive = true;
-        }
-        if (quitbuttonActive)
         {
             Application.Quit();
             Debug.Log("Application has been quit");
-        }
-
-        if (Input.GetKeyUp(KeyCode.Q))
-        {
-            quitbuttonActive = false;
         }
     }
 }

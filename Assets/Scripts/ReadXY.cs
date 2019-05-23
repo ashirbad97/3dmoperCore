@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using UnityEngine.SceneManagement;
-using UnityEditor;
 
 public class ReadXY : MonoBehaviour
 {
@@ -30,41 +29,40 @@ public class ReadXY : MonoBehaviour
         switch (trialNumber)
         {
             case 1:
-                //path = "Assets/Scripts/xposdir3d_new.txt"; //For the directionality expt
-                path = "Assets/Scripts/x_pos_fove2.txt"; // For the 20 second experiment
+                //path = "xposdir3d_new"; //For the directionality expt
+                path = "x_pos_fove1"; // For the 20 second experiment
                 break;
             case 2:
-                path = "Assets/Scripts/x_pos_fove2.txt";
+                path = "x_pos_fove2";
                 break;
             case 3:
-                path = "Assets/Scripts/x_pos_fove3.txt";
+                path = "x_pos_fove3";
                 break;
             case 4:
-                path = "Assets/Scripts/x_pos_fove4.txt";
+                path = "x_pos_fove4";
                 break;
             case 5:
-                path = "Assets/Scripts/x_pos_fove5.txt";
+                path = "x_pos_fove5";
                 break;
             case 6:
-                path = "Assets/Scripts/x_pos_fove6.txt";
+                path = "x_pos_fove6";
                 break;
-        } 
-        //string path = "Assets/Scripts/x_pos_fove.txt";
-	
+        }
+        //string path = "x_pos_fove";
+        TextAsset positionsText = Resources.Load<TextAsset>(path);
+        positionsText.text.Split(',');
         //Read the text from directly from the test.txt file
-        StreamReader reader = new StreamReader(path); 
+        //StreamReader reader = new StreamReader(path); 
         
-        string[] numbers = reader.ReadToEnd().Split(','); //.Split('	');
+        string[] numbers = positionsText.text.Split(','); //.Split('	');
         posx = new float[numbers.Length]; //1400 in this case
         for (int i = 0; i < numbers.Length; i++)
         {
             posx[i] = float.Parse(numbers[i]);
         }
- 		reader.Close();
+ 		//reader.Close();
         
         // The correct way to read file in Unity - else it wont load while building
-        AssetDatabase.ImportAsset(path);
-        TextAsset asset = Resources.Load("x_pos_fove") as TextAsset;//"x_pos_fove" for 20 sec ka expt or "x_pos_dir_3d" for the directionality
     }
 	
 	 void ReadStringy()
@@ -75,42 +73,44 @@ public class ReadXY : MonoBehaviour
         switch (trialNumber)
         {
             case 1:
-                //path = "Assets/Scripts/yposdir3d_new.txt"; //For the directionality expt
-                path = "Assets/Scripts/y_pos_fove2.txt"; // For the 20 second experiment
+                //path = "yposdir3d_new"; //For the directionality expt
+                path = "y_pos_fove1"; // For the 20 second experiment
                 break;
             case 2:
-                path = "Assets/Scripts/y_pos_fove2.txt";
+                path = "y_pos_fove2";
                 break;
             case 3:
-                path = "Assets/Scripts/y_pos_fove3.txt";
+                path = "y_pos_fove3";
                 break;
             case 4:
-                path = "Assets/Scripts/y_pos_fove4.txt";
+                path = "y_pos_fove4";
                 break;
             case 5:
-                path = "Assets/Scripts/y_pos_fove5.txt";
+                path = "y_pos_fove5";
                 break;
             case 6:
-                path = "Assets/Scripts/y_pos_fove6.txt";
+                path = "y_pos_fove6";
                 break;
         }
 
-        //string path = "Assets/Scripts/y_pos_fove.txt";
-	
+        //string path = "y_pos_fove";
+
         //Read the text from directly from the test.txt file
-        StreamReader reader = new StreamReader(path); 
-        
-        string[] numbers = reader.ReadToEnd().Split(','); //.Split('	');
+        TextAsset positionsText = Resources.Load<TextAsset>(path);
+        positionsText.text.Split(',');
+        //Read the text from directly from the test.txt file
+        //StreamReader reader = new StreamReader(path); 
+
+        string[] numbers = positionsText.text.Split(','); //.Split('	');
         posy = new float[numbers.Length];
         for (int i = 0; i < numbers.Length; i++)
         {
             posy[i] = float.Parse(numbers[i]);
         }
- 		reader.Close();
+ 		//reader.Close();
 
         // The correct way to read file in Unity - else it wont load while building
-        AssetDatabase.ImportAsset(path);
-        TextAsset asset = Resources.Load("y_pos_fove") as TextAsset; //"y_pos_fove" for 20 sec ka expt or "y_pos_dir_3d" for the directionality
+
     }
 
     void ReadStringz()
@@ -121,44 +121,47 @@ public class ReadXY : MonoBehaviour
         switch (trialNumber)
         {
             case 1:
-                //path = "Assets/Scripts/zposdir3d_new.txt"; //For the directionality expt
-                path = "Assets/Scripts/z_pos_fove2.txt"; //For the 20 second experiment
+                //path = "zposdir3d_new"; //For the directionality expt
+                path = "z_pos_fove1"; //For the 20 second experiment
                 break;
             case 2:
-                path = "Assets/Scripts/z_pos_fove2.txt";
+                path = "z_pos_fove2";
                 break;
             case 3:
-                path = "Assets/Scripts/z_pos_fove3.txt";
+                path = "z_pos_fove3";
                 break;
             case 4:
-                path = "Assets/Scripts/z_pos_fove4.txt";
+                path = "z_pos_fove4";
                 break;
             case 5:
-                path = "Assets/Scripts/z_pos_fove5.txt";
+                path = "z_pos_fove5";
                 break;
             case 6:
-                path = "Assets/Scripts/z_pos_fove6.txt";
+                path = "z_pos_fove6";
                 break;
         }
 
 
 
-        //string path = "Assets/Scripts/z_pos_fove.txt";
+        //string path = "z_pos_fove";
 
         //Read the text from directly from the test.txt file
-        StreamReader reader = new StreamReader(path);
+        TextAsset positionsText = Resources.Load<TextAsset>(path);
+        positionsText.text.Split(',');
+        //Read the text from directly from the test.txt file
+        //StreamReader reader = new StreamReader(path); 
 
-        string[] numbers = reader.ReadToEnd().Split(','); //.Split('	');
+        string[] numbers = positionsText.text.Split(','); //.Split('	');
         posz = new float[numbers.Length];
         for (int i = 0; i < numbers.Length; i++)
         {
             posz[i] = float.Parse(numbers[i]);
         }
-        reader.Close();
+        //reader.Close();
 
         // The correct way to read file in Unity - else it wont load while building
-        AssetDatabase.ImportAsset(path);
-        TextAsset asset = Resources.Load("z_pos_fove") as TextAsset; //"z_pos_fove" for 20 sec ka expt or "z_pos_dir_3d" for the directionality
+        //AssetDatabase.ImportAsset(path);
+        //TextAsset asset = Resources.Load("z_pos_fove") as TextAsset; //"z_pos_fove" for 20 sec ka expt or "z_pos_dir_3d" for the directionality
     }
 
 

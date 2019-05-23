@@ -19,7 +19,7 @@ public class Modified_RandomMotion2 : MonoBehaviour
 
 	
 	// Update is called once per frame
-	void FixedUpdate ()
+	void Update ()
     {
 		if (counter<1400)
         {
@@ -32,7 +32,8 @@ public class Modified_RandomMotion2 : MonoBehaviour
         {
             //Debug.Log("I am in else condition");
             ReadXY.trialNumber = ReadXY.trialNumber + 1;
-            SceneManager.LoadScene("Menu");
+            SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
+            SceneManager.UnloadSceneAsync("Stimulus");
         }
 	}
 }

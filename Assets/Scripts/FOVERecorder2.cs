@@ -20,7 +20,7 @@ public class FOVERecorder2 : MonoBehaviour
 
     // The number a data to record before writing out to disk
     [Tooltip("The number of entries to store in memory before writing asynchronously to disk")]
-    public uint writeAtDataCount = 1000; //1000
+    public uint writeAtDataCount = 1400;
 
     // The name of the file to write our results into
     [Tooltip("The base name of the file. Don't add any extensions, as \".csv\" will be appended to whatever you put " +
@@ -31,6 +31,8 @@ public class FOVERecorder2 : MonoBehaviour
     [Tooltip("If the specified filename already exists, the recorder will increment a counter until an unused " +
              "filename is found.")]
     public bool overwriteExistingFile = false;
+
+    float startTime = 0;
 
     [Serializable]
     public struct RecordingPrecision_struct
@@ -102,8 +104,10 @@ public class FOVERecorder2 : MonoBehaviour
     // Use this for initialization.
     void Start()
     {
+        startTime = Time.time;
         // Check to make sure that the FOVE interface variable is assigned. This prevents a ton of errors
         // from filling your log if you forget to assign the interface through the inspector.
+        fove = FindObjectOfType<FoveInterface>();
         if (fove == null)
         {
             Debug.LogWarning("Forgot to assign a Fove interface to the FOVERecorder object.");
@@ -248,7 +252,7 @@ public class FOVERecorder2 : MonoBehaviour
             // If you add new fields, be sure to write them here.
             RecordingDatum datum = new RecordingDatum
             {
-                frameTime = Time.time,
+                frameTime = Time.time - startTime,
                 //leftGaze = rays.left,
                 //rightGaze = rays.right,
 

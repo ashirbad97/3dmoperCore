@@ -7,22 +7,12 @@ using UnityEngine.SceneManagement;
 public class RizCalibSequence : MonoBehaviour
 {
     public FoveInterface foveInterface;
-    bool down = false;
-    bool hotKey = false;
 
     // Use this for initialization
     void Start ()
     {
         //setup
         foveInterface = FindObjectOfType<FoveInterface>();
-        //do not let self collission occur! the calibration object itself should not have a collider, but if it does, disable it.
-        Collider collider = this.gameObject.GetComponent<Collider>();
-        if (collider)
-        {
-            collider.enabled = false;
-        }
-        GameObject target;
-
     }
 	
 	// Update is called once per frame
@@ -30,37 +20,14 @@ public class RizCalibSequence : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
         {
-            //this.GetComponent<Renderer>().enabled = true;
-            down = true;
+            FoveInterface.EnsureEyeTrackingCalibration();
+            SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
+            SceneManager.UnloadSceneAsync("Calibration");
         }
-        if (down)
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            FoveInterface.EnsureEyeTrackingCalibration(); //Call the calibration routine
-            hotKey = true;
-            if (hotKey)
-            {
-                SceneManager.LoadScene("Menu");
-            }
-            //RaycastHit hit;
-            //Ray ray = new Ray(foveInterface.transform.position, foveInterface.transform.forward);
-            //if (Physics.Raycast(ray, out hit, 20.0f))
-            //{
-            //transform.position = hit.point;
-            //}
-            //else
-            //{
-            //transform.position = foveInterface.transform.position + foveInterface.transform.forward * 10f;
-            //}
+            SceneManager.LoadScene("Menu", LoadSceneMode.Additive);
+            SceneManager.UnloadSceneAsync("Calibration");
         }
-        if (Input.GetKeyUp(KeyCode.C))
-        {
-            down = false;
-            
-            //this.GetComponent<Renderer>().enabled = false;
-            //Fove.FoveHeadset.GetHeadset().ManualDriftCorrection3D(this.transform.localPosition); //Uncomment it while running
-            //foveInterface.ManualDriftCorrection3D(this.transform.localPosition);
-        }
-
-
     }
 }
