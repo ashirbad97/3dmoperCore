@@ -25,7 +25,7 @@ public class FOVERecorder2 : MonoBehaviour
     // The name of the file to write our results into
     [Tooltip("The base name of the file. Don't add any extensions, as \".csv\" will be appended to whatever you put " +
              "here.")]
-    public string fileName = "fove_recorded_results_v2";
+    public string fileName = "fove_recorded_results_v2_1";
 
     // Check this to overwrite existing data files rather than incrementing a value each time.
     [Tooltip("If the specified filename already exists, the recorder will increment a counter until an unused " +
@@ -70,8 +70,8 @@ public class FOVERecorder2 : MonoBehaviour
     class RecordingDatum
     {
         public float frameTime;
-        //public Ray leftGaze;
-        //public Ray rightGaze;
+        public Ray leftGaze;
+        public Ray rightGaze;
 
         // New functionalities added
         //public Ray eyeDirection;
@@ -148,6 +148,8 @@ public class FOVERecorder2 : MonoBehaviour
             //                            "eyePos3D x,eyePos3D y,eyePos3D z\n");
 
             File.WriteAllText(fileName, "frameTime," +
+                                        "leftGaze direction x,leftGaze direction y,leftGaze direction z," +
+                                        "rightGaze direction x,rightGaze direction y,rightGaze direction z," +
                                         "eyePos3D x,eyePos3D y,eyePos3D z\n");
         }
         catch (Exception e)
@@ -244,7 +246,7 @@ public class FOVERecorder2 : MonoBehaviour
             // The FoveInterfaceBase.EyeRays struct contains world-space rays indicating eye gaze origin and direction,
             // so you don't necessarily need to record head position and orientation just to transform the gaze vectors
             // themselves. This data is pre-transformed for you.
-            //var rays = fove.GetGazeRays();
+            var rays = fove.GetGazeRays();
 
             //added new
             var gaze = fove.GetGazeConvergence();
@@ -253,8 +255,8 @@ public class FOVERecorder2 : MonoBehaviour
             RecordingDatum datum = new RecordingDatum
             {
                 frameTime = Time.time - startTime,
-                //leftGaze = rays.left,
-                //rightGaze = rays.right,
+                leftGaze = rays.left,
+                rightGaze = rays.right,
 
                 
                 //eyeDirection = gaze.ray,
@@ -354,8 +356,16 @@ public class FOVERecorder2 : MonoBehaviour
 
                     text += string.Format(
                        "\"{0}\"," +
-                       "\"{1}\",\"{2}\",\"{3}\"\n",
+                       "\"{1}\",\"{2}\",\"{3}\"," +
+                       "\"{4}\",\"{5}\",\"{6}\"," +
+                       "\"{7}\",\"{8}\",\"{9}\"\n",
                        datum.frameTime.ToString(tPrecision),
+                       datum.leftGaze.direction.x.ToString(vPrecision),
+                       datum.leftGaze.direction.y.ToString(vPrecision),
+                       datum.leftGaze.direction.z.ToString(vPrecision),
+                       datum.rightGaze.direction.x.ToString(vPrecision),
+                       datum.rightGaze.direction.y.ToString(vPrecision),
+                       datum.rightGaze.direction.z.ToString(vPrecision),
                        datum.eyePosition.x.ToString(vPrecision),
                        datum.eyePosition.y.ToString(vPrecision),
                        datum.eyePosition.z.ToString(vPrecision));
