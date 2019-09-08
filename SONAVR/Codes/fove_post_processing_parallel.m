@@ -1,5 +1,5 @@
 %cd 'D:\Rijul\SONA VR Postprocessing\Results\001'
-
+addpath 'D:\Rijul\SONA VR Postprocessing'
 %% Get stimulus variables
 folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder
 cd (folder_stimulus);
@@ -51,6 +51,18 @@ for i = 1:size(AllFiles_response,1)
     clear fove_data
 end
 
+% Clip frames
+clip_frames = 140;
+
+x_stim(:,1:clip_frames) = [];
+x_resp(:,1:clip_frames) = [];
+
+y_stim(:,1:clip_frames) = [];
+y_resp(:,1:clip_frames) = [];
+
+z_stim(:,1:clip_frames) = [];
+z_resp(:,1:clip_frames) = [];
+
 %Initial clean
 x_resp(x_resp>100)=100;
 x_resp(x_resp<-100)=-100;
@@ -65,6 +77,31 @@ z_resp(z_resp<0)=0;
 x_resp_filt = medfilt1(x_resp,20,[],2); % Filter along rows
 y_resp_filt = medfilt1(y_resp,20,[],2);
 z_resp_filt = medfilt1(z_resp,20,[],2);
+
+%Remove NaNz
+% [pks_x,locs_x] = findpeaks(x_resp_filt);
+% [pks_y,locs_y] = findpeaks(y_resp_filt);
+
+for ii = 1:size(z_resp_filt,1)
+[pks_z,locs_z] = findpeaks(z_resp_filt(ii,:));
+Results_peaks_z(ii).peaks = pks_z;
+Results_peaks_z(ii).locations = locs_z;
+end
+
+for kk = 1:length(Results_peaks_z)
+temp_peaks = Results_peaks_z(kk).peaks;
+temp_locs = Results_peaks_z(kk).locations;
+indix = find(temp_peaks>500);
+for zz = 1:length(indix)
+    z_resp_filt(kk,temp_locs(indix(1,zz))-1:temp_locs(indix(1,zz))+40) = NaN; %Check this
+end
+end
+
+z_resp_filt = z_resp_filt(:,1:size(z_stim,2));
+clear kk temp_peaks temp_locs indixzz 
+% z_resp_filled = fillgaps(z_resp_filt',140)';
+z_resp_filled = fillmissing(z_resp_filt,'makima',2);
+
 
 %% Plot all the trials - For Visualization
 
@@ -84,7 +121,7 @@ end
 
 fig_ind_z = 1;
 for i = 3:3:18
-    subplot(6,3,i); plot((z_stim(fig_ind_z,:)),'LineWidth',1.5);hold on; plot((z_resp_filt(fig_ind_z,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - Z vs Eye Position - Z',fig_ind_z));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
+    subplot(6,3,i); plot((z_stim(fig_ind_z,:)),'LineWidth',1.5);hold on; plot((z_resp_filled(fig_ind_z,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - Z vs Eye Position - Z',fig_ind_z));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
     legend('Ball Position','Eye Position');
     fig_ind_z = fig_ind_z + 1;
 end
@@ -99,7 +136,7 @@ y_stim_zero = bsxfun(@minus, y_stim, y_stim(:,1));
 y_resp_zero = bsxfun(@minus, y_resp_filt, y_resp_filt(:,1));
 
 z_stim_zero = bsxfun(@minus, z_stim, z_stim(:,1));
-z_resp_zero = bsxfun(@minus, z_resp_filt, z_resp_filt(:,1));
+z_resp_zero = bsxfun(@minus, z_resp_filled, z_resp_filled(:,1));
 
 %% Velocities (from position to velocity in cm/sec
 x_stim_vel = zscore(diff(x_stim_zero'))';
@@ -113,7 +150,7 @@ z_resp_vel = zscore(diff(z_resp_zero'))';
 
 %% Plot CCG
 
-for i = 1:size(x_stim,1)
+for i = 1:4 % size(x_stim,1)
 ccg_x(i,:) = xcorr(x_resp_vel(i,:),x_stim_vel(i,:),70,'coeff');
 
 ccg_y(i,:) = xcorr(y_resp_vel(i,:),y_stim_vel(i,:),70,'coeff');
@@ -146,4 +183,8 @@ xlabel('time (s)');
 ylabel('correlation value');
 title('X,Y,Z-stim CCG');
 legend('Horizontal Component','Vertical Component', 'Depth Component');
+
+%% Gaussian Fitting
+
+%[fitresult_X, gof_X] = CCG_GaussFit_X(x, avg_ccg_x)
 
