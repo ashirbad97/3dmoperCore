@@ -1,0 +1,4 @@
+Bad Data:
+
+1. 006
+2. 007 - only 1 trial is fine

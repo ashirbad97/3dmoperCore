@@ -1,5 +1,6 @@
 %cd 'D:\Rijul\SONA VR Postprocessing\Results\001'
-addpath 'D:\Rijul\SONA VR Postprocessing'
+%addpath 'D:\Rijul\SONA VR Postprocessing'
+%addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
 %% Get stimulus variables
 folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder
 cd (folder_stimulus);
@@ -63,7 +64,7 @@ y_resp(:,1:clip_frames) = [];
 z_stim(:,1:clip_frames) = [];
 z_resp(:,1:clip_frames) = [];
 
-%Initial clean
+%Perceptual Boundaries
 x_resp(x_resp>100)=100;
 x_resp(x_resp<-100)=-100;
 
@@ -93,15 +94,19 @@ temp_peaks = Results_peaks_z(kk).peaks;
 temp_locs = Results_peaks_z(kk).locations;
 indix = find(temp_peaks>500);
 for zz = 1:length(indix)
-    z_resp_filt(kk,temp_locs(indix(1,zz))-1:temp_locs(indix(1,zz))+40) = NaN; %Check this
+    if (temp_locs(indix(1,zz))<4)
+        temp_locs(indix(1,zz)) = 4;
+    end
+    z_resp_filt(kk,temp_locs(indix(1,zz))-3:temp_locs(indix(1,zz))+40) = NaN; %Check this
 end
 end
 
 z_resp_filt = z_resp_filt(:,1:size(z_stim,2));
 clear kk temp_peaks temp_locs indixzz 
 % z_resp_filled = fillgaps(z_resp_filt',140)';
-z_resp_filled = fillmissing(z_resp_filt,'makima',2);
-
+%z_resp_filled = fillmissing(z_resp_filt,'pchip'); %'makima',2);
+z_resp_filled = fillmissing(z_resp_filt,'linear',2,'EndValues','nearest');
+% z_resp_filled = fillmissing(z_resp_filt,'next'); %'makima',2);
 
 %% Plot all the trials - For Visualization
 
