@@ -1,6 +1,7 @@
 %cd 'D:\Rijul\SONA VR Postprocessing\Results\001'
 %addpath 'D:\Rijul\SONA VR Postprocessing'
 %addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
+
 %% Get stimulus variables
 folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder
 cd (folder_stimulus);
@@ -52,7 +53,7 @@ for i = 1:size(AllFiles_response,1)
     clear fove_data
 end
 
-% Clip frames
+% Clip first 2 seconds
 clip_frames = 140;
 
 x_stim(:,1:clip_frames) = [];
@@ -64,7 +65,7 @@ y_resp(:,1:clip_frames) = [];
 z_stim(:,1:clip_frames) = [];
 z_resp(:,1:clip_frames) = [];
 
-%Perceptual Boundaries
+%Define Perceptual Boundaries
 x_resp(x_resp>100)=100;
 x_resp(x_resp<-100)=-100;
 
@@ -79,7 +80,6 @@ x_resp_filt = medfilt1(x_resp,20,[],2); % Filter along rows
 y_resp_filt = medfilt1(y_resp,20,[],2);
 z_resp_filt = medfilt1(z_resp,20,[],2);
 
-%Remove NaNz
 % [pks_x,locs_x] = findpeaks(x_resp_filt);
 % [pks_y,locs_y] = findpeaks(y_resp_filt);
 
@@ -189,7 +189,43 @@ ylabel('correlation value');
 title('X,Y,Z-stim CCG');
 legend('Horizontal Component','Vertical Component', 'Depth Component');
 
-%% Gaussian Fitting
-
+%% Gaussian Fitting - usual gaussian or skewed Gabor?
+ccg_x_axis = (-70:70)/70;
+%Usual Gaussian
 %[fitresult_X, gof_X] = CCG_GaussFit_X(x, avg_ccg_x)
+[x_gaussmodel, x_goodness] = fit(ccg_x_axis',avg_ccg_x','gauss1');
+[y_gaussmodel, y_goodness] = fit(ccg_x_axis',avg_ccg_y','gauss1');
+[z_gaussmodel, z_goodness] = fit(ccg_x_axis',avg_ccg_z','gauss1');
+
+%Model Fit parameters
+x_result.amp = x_gaussmodel.a1; %Amplitude
+x_result.lag = x_gaussmodel.b1; %Mean of Gaussian
+x_result.width = x_gaussmodel.c1;
+x_result.fwhm = x_gaussmodel.c1.*(2*sqrt(2*log(2)));
+x_result.adjR2 = x_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
+
+y_result.amp = y_gaussmodel.a1; %Amplitude
+y_result.lag = y_gaussmodel.b1; %Mean of Gaussian
+y_result.width = y_gaussmodel.c1;
+y_result.fwhm = y_gaussmodel.c1.*(2*sqrt(2*log(2)));
+y_result.adjR2 = y_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
+
+z_result.amp = z_gaussmodel.a1; %Amplitude
+z_result.lag = z_gaussmodel.b1; %Mean of Gaussian
+z_result.width = z_gaussmodel.c1;
+z_result.fwhm = z_gaussmodel.c1.*(2*sqrt(2*log(2)));
+z_result.adjR2 = z_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
+
+%% Visualize Peak, Lag and FWHM
+x_y_z_peaks = [x_result.amp;y_result.amp;z_result.amp];
+peaks_categories = categorical({'Horizontal','Vertical','Depth'});
+peaks_bar = bar(peaks_categories,x_y_z_peaks);
+ylabel('Correlation');
+% Gabor skew curve fitting equations
+a*exp(-((t-mu)/2*c1)^2)*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)/2*c2)^2)*sin(2*pi*w*(t-mu)).*(t<mu);
+
+a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
+
+
+
 

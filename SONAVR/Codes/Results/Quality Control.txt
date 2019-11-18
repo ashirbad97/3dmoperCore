@@ -1,4 +1,16 @@
 Bad Data:
 
-1. 006
-2. 007 - only 1 trial is fine
+1.  006
+2.  007 - only 1 trial is fine
+3.  009- trial 5 and trial 6 are bad
+4.  010- all the 3d points are weird - check this
+5.  011 - Trial 5 and 6 are bad
+6.  012 - Trial 5 is bad
+7.  013 - trial 5 and 6 are bad
+8.  015 - Trial 5 and 6 are bad
+9.  016 - Trial 5 and 6 are bad
+10. 017 - Trial 5 is bad
+11. 018
+12. 019
+13. 020 - Trial 5 is bad
+14. 021 - Trial 5 and 6 are bad
