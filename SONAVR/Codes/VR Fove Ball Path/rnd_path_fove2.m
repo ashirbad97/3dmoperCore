@@ -14,12 +14,12 @@ plot_On = 1;
 
 for mm = 1:no_of_paths
     %% Generate Depth i.e. Z-axis
-    std_dev_z = 5; %
+    std_dev_z = 5; %5 originally; Controls the overall range
     mean_z = 0;
     depth_vel_distribution = std_dev_z.*randn(duration_frames,1) + mean_z;
     
     %% Gaussian filter for Z
-    cutoff_z = 5; %5 Hz originally
+    cutoff_z = 5; %5 Hz originally; Controls the frame-to-frame jerks
     sz = duration_frames;    % length of gaussFilter vector
     filtered_depth_vel = rizzgauss(depth_vel_distribution, cutoff_z, sz);
     depth_pos = cumsum(filtered_depth_vel);

@@ -1,6 +1,7 @@
 %cd 'D:\Rijul\SONA VR Postprocessing\Results\001'
 %addpath 'D:\Rijul\SONA VR Postprocessing'
-%addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
+clc;clear;
+addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
 
 %% Get stimulus variables
 folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder
@@ -72,9 +73,125 @@ x_resp(x_resp<-100)=-100;
 y_resp(y_resp>100)=100;
 y_resp(y_resp<-100)=-100;
 
-z_resp(z_resp>600)=600;
+z_resp(z_resp>800)=800;
 z_resp(z_resp<0)=0;
 
+%% Trial Exclusion X, Y, and Z
+%For X
+trial_excl_vel_x = diff(x_resp,1,2);
+mask_x = trial_excl_vel_x~=0;
+
+for kk = 1:size(mask_x,1)
+    this_trial = mask_x(kk,:);
+    transitions = diff([0; this_trial' == 0; 0]);
+    runstarts = find(transitions == 1);
+    runends = find(transitions == -1); 
+    runlengths = runends - runstarts;
+    find_trashy_run = find(runlengths>350);
+    if (isempty(find_trashy_run))
+        find_faulty_run = find(runlengths>210);
+        if (isempty(find_faulty_run))
+            continue;
+        end
+            
+        time_faulty_run = runlengths(find_faulty_run);
+        faulty_run_start = runstarts(find_faulty_run);
+        faulty_run_end = runends(find_faulty_run);
+        if (faulty_run_start-60)<runends(find_faulty_run-1)
+            time_faulty_prev = runlengths(find_faulty_run-1);
+        end
+        if(faulty_run_end+60)> runstarts(find_faulty_run+1)
+            time_faulty_next = runlengths(find_faulty_run+1);
+        end
+        total_faulty_time = time_faulty_run+time_faulty_prev+time_faulty_next;
+        if(total_faulty_time)>350
+            note_down_excl_trial_x{kk,:} = kk;
+        end
+         
+    else
+        note_down_excl_trial_x{kk,:} = kk;
+    end
+end
+
+
+%For Y
+trial_excl_vel_y = diff(y_resp,1,2);
+mask_y = trial_excl_vel_y~=0;
+
+for kk = 1:size(mask_y,1)
+    this_trial = mask_y(kk,:);
+    transitions = diff([0; this_trial' == 0; 0]);
+    runstarts = find(transitions == 1);
+    runends = find(transitions == -1); 
+    runlengths = runends - runstarts;
+    find_trashy_run = find(runlengths>350);
+    if (isempty(find_trashy_run))
+        find_faulty_run = find(runlengths>210);
+        if (isempty(find_faulty_run))
+            continue;
+        end
+            
+        time_faulty_run = runlengths(find_faulty_run);
+        faulty_run_start = runstarts(find_faulty_run);
+        faulty_run_end = runends(find_faulty_run);
+        if (faulty_run_start-60)<runends(find_faulty_run-1)
+            time_faulty_prev = runlengths(find_faulty_run-1);
+        else
+            time_faulty_prev = 0;
+        end
+        if(faulty_run_end+60)> runstarts(find_faulty_run+1)
+            time_faulty_next = runlengths(find_faulty_run+1);
+        else
+            time_faulty_next = 0;
+        end
+        total_faulty_time = time_faulty_run+time_faulty_prev+time_faulty_next;
+        if(total_faulty_time)>350
+            note_down_excl_trial_y{kk,:} = kk;
+        end
+         
+    else
+        note_down_excl_trial_y{kk,:} = kk;
+    end
+end
+
+
+% For Z
+trial_excl_vel_z = diff(z_resp,1,2);
+mask_z = trial_excl_vel_z~=0;
+% mask_z = mask_z';
+for kk = 1:size(mask_z,1)
+    this_trial = mask_z(kk,:);
+    transitions = diff([0; this_trial' == 0; 0]);
+    runstarts = find(transitions == 1);
+    runends = find(transitions == -1); 
+    runlengths = runends - runstarts;
+    find_trashy_run = find(runlengths>350);
+    if (isempty(find_trashy_run))
+        find_faulty_run = find(runlengths>210);
+        if (isempty(find_faulty_run))
+            continue;
+        end
+            
+        time_faulty_run = runlengths(find_faulty_run);
+        faulty_run_start = runstarts(find_faulty_run);
+        faulty_run_end = runends(find_faulty_run);
+        if (faulty_run_start-60)<runends(find_faulty_run-1)
+            time_faulty_prev = runlengths(find_faulty_run-1);
+        end
+        if(faulty_run_end+60)> runstarts(find_faulty_run+1)
+            time_faulty_next = runlengths(find_faulty_run+1);
+        end
+        total_faulty_time = time_faulty_run+time_faulty_prev+time_faulty_next;
+        if(total_faulty_time)>350
+            note_down_excl_trial_z{kk,:} = kk;
+        end
+         
+    else
+        note_down_excl_trial_z{kk,:} = kk;
+    end
+end
+
+%%
 %Remove jerks
 x_resp_filt = medfilt1(x_resp,20,[],2); % Filter along rows
 y_resp_filt = medfilt1(y_resp,20,[],2);
@@ -110,7 +227,8 @@ z_resp_filled = fillmissing(z_resp_filt,'linear',2,'EndValues','nearest');
 
 %% Plot all the trials - For Visualization
 
-figure; fig_ind_x = 1;
+fig_1 = figure('Position',[-61   242   911   744]);
+fig_ind_x = 1;
 for i = 1:3:18
 subplot(6,3,i); plot((x_stim(fig_ind_x,:)),'LineWidth',1.5);hold on; plot((x_resp_filt(fig_ind_x,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - X vs Eye Position - X',fig_ind_x));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
 legend('Ball Position','Eye Position');
@@ -153,9 +271,60 @@ y_resp_vel = zscore(diff(y_resp_zero'))';
 z_stim_vel = zscore(diff(z_stim_zero'))';
 z_resp_vel = zscore(diff(z_resp_zero'))';
 
+%%Now exclude the faulty trials from CCG calculation
+if (exist ('note_down_excl_trial_x','var'))
+    note_down_excl_trial_x = note_down_excl_trial_x(~any(cellfun('isempty', note_down_excl_trial_x), 2), :);
+else
+    note_down_excl_trial_x = {0};
+end
+
+
+if (exist ('note_down_excl_trial_y','var'))
+    note_down_excl_trial_y = note_down_excl_trial_y(~any(cellfun('isempty', note_down_excl_trial_y), 2), :);
+else
+    note_down_excl_trial_y = {0};
+end
+
+if (exist ('note_down_excl_trial_z','var'))
+note_down_excl_trial_z = note_down_excl_trial_z(~any(cellfun('isempty', note_down_excl_trial_z), 2), :);
+else
+    note_down_excl_trial_z = {0};
+end
+
+
+total_exclude_trials = [note_down_excl_trial_x;note_down_excl_trial_y;note_down_excl_trial_z];
+total_exclude_trials_unique = unique(cell2mat(total_exclude_trials));
+total_exclude_trials_unique(total_exclude_trials_unique==0)=[];
+
+%Note the position when it gets deleted. 
+if (~isempty(total_exclude_trials_unique))
+    for kk = 1:size(total_exclude_trials_unique,1)
+    x_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
+    x_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
+    
+    y_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
+    y_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
+    
+    z_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
+    z_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
+    end
+    fprintf('The following trials were faulty:\n');
+    disp(total_exclude_trials_unique); 
+else
+    fprintf('All trials seem to be fine!\n');
+end
+
+%Remove trials with NAN. 
+
+x_resp_vel(any(isnan(x_resp_vel), 2), :) = [];
+x_stim_vel(any(isnan(x_stim_vel), 2), :) = [];
+y_resp_vel(any(isnan(y_resp_vel), 2), :) = [];
+y_stim_vel(any(isnan(y_stim_vel), 2), :) = [];
+z_resp_vel(any(isnan(z_resp_vel), 2), :) = [];
+z_stim_vel(any(isnan(z_stim_vel), 2), :) = [];
 %% Plot CCG
 
-for i = 1:4 % size(x_stim,1)
+for i = 1:size(x_stim_vel,1)
 ccg_x(i,:) = xcorr(x_resp_vel(i,:),x_stim_vel(i,:),70,'coeff');
 
 ccg_y(i,:) = xcorr(y_resp_vel(i,:),y_stim_vel(i,:),70,'coeff');
@@ -163,9 +332,13 @@ ccg_y(i,:) = xcorr(y_resp_vel(i,:),y_stim_vel(i,:),70,'coeff');
 ccg_z(i,:) = xcorr(z_resp_vel(i,:),z_stim_vel(i,:),70,'coeff');
 end
 
+% Average CCG
 avg_ccg_x = mean(ccg_x);
 avg_ccg_y = mean(ccg_y);
 avg_ccg_z = mean(ccg_z);
+
+% Median CCG
+% median_ccg_x
 
 
 colors = [    0.6980    0.0941    0.1686;...
@@ -175,7 +348,7 @@ colors = [    0.6980    0.0941    0.1686;...
     0.4039    0.6627    0.8118;...
     0.1294    0.4000    0.6745];
 
-figure;
+fig_2 = figure('Position',[795   565   560   420]);
 %h_x = plot((-70:70)/70,ccg_x,'LineWidth',3,'Color',colors(1,:));
 h_x = plot((-70:70)/70,avg_ccg_x,'LineWidth',3);
 hold on;
@@ -219,12 +392,42 @@ z_result.adjR2 = z_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-
 %% Visualize Peak, Lag and FWHM
 x_y_z_peaks = [x_result.amp;y_result.amp;z_result.amp];
 peaks_categories = categorical({'Horizontal','Vertical','Depth'});
+fig_3 = figure('Position',[797   58   560   420]);
 peaks_bar = bar(peaks_categories,x_y_z_peaks);
+peaks_bar.FaceColor = 'flat';
+peaks_bar.CData(1,:) = [1 0 0];
+peaks_bar.CData(2,:) = [0 1 0];
+peaks_bar.CData(3,:) = [0 0 1];
 ylabel('Correlation');
-% Gabor skew curve fitting equations
-a*exp(-((t-mu)/2*c1)^2)*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)/2*c2)^2)*sin(2*pi*w*(t-mu)).*(t<mu);
+title('CCG Peak');
 
-a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
+x_y_z_lags = [x_result.lag;y_result.lag;z_result.lag];
+lags_categories = categorical({'Horizontal','Vertical','Depth'});
+fig_4 = figure('Position',[1359   564   560   420]);
+lags_bar = bar(lags_categories,x_y_z_lags);
+lags_bar.FaceColor = 'flat';
+lags_bar.CData(1,:) = [1 0 0];
+lags_bar.CData(2,:) = [0 1 0];
+lags_bar.CData(3,:) = [0 0 1];
+ylabel('Time(s)');
+title('CCG Lag');
+
+x_y_z_fwhm = [x_result.fwhm;y_result.fwhm;z_result.fwhm];
+fwhm_categories = categorical({'Horizontal','Vertical','Depth'});
+fig_5 = figure('Position',[1362   59   560   420]);
+fwhm_bar = bar(fwhm_categories,x_y_z_fwhm);
+fwhm_bar.FaceColor = 'flat';
+fwhm_bar.CData(1,:) = [1 0 0];
+fwhm_bar.CData(2,:) = [0 1 0];
+fwhm_bar.CData(3,:) = [0 0 1];
+ylabel('Time(s)');
+title('CCG Width (at half peak)');
+
+
+% Gabor skew curve fitting equations
+% a*exp(-((t-mu)/2*c1)^2)*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)/2*c2)^2)*sin(2*pi*w*(t-mu)).*(t<mu);
+% 
+% a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
 
 
 
