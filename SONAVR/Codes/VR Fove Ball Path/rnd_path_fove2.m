@@ -7,6 +7,7 @@ duration_frames = 1400;
 aspect_ratio = 1.77;
 no_of_paths = 6;
 plot_On = 1;
+save_paths_On = 0;
 % z = [65:750];
 % start_z = 65;
 % end_z = 750;
@@ -119,6 +120,7 @@ for mm = 1:no_of_paths
     % width_vel_corr = xcorr(width_vel);
     
     %% Save paths to text files
+    if save_paths_On
     fsave = ['path' num2str(mm) '.mat'];
     textsave_x = ['x_pos_fove' num2str(mm) '.txt'];
     textsave_y = ['y_pos_fove' num2str(mm) '.txt'];
@@ -130,6 +132,7 @@ for mm = 1:no_of_paths
     mex_WriteMatrix(textsave_z, depth_pos', '%0.4f', ',', 'w+');
     
     save(fsave, 'depth_pos', 'height_pos', 'width_pos');
+    end
     
 end
 % start_y = -min(y_bounds);

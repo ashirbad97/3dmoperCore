@@ -3,6 +3,9 @@
 clc;clear;
 addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
 
+%% Bunch of Switches
+write_Table_On = 0;
+
 %% Get stimulus variables
 folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder
 cd (folder_stimulus);
@@ -33,8 +36,8 @@ for kk = 13:18
 end
 z_stim = z_stim(any(z_stim,2),:);
 
-clearvars kk file_name_stimulus    
-    
+clearvars kk file_name_stimulus
+
 %% Get response variables
 folder_response = uigetdir(pwd,'Select any result folder'); %Choose a particular result folder
 cd (folder_response);
@@ -67,13 +70,13 @@ z_stim(:,1:clip_frames) = [];
 z_resp(:,1:clip_frames) = [];
 
 %Define Perceptual Boundaries
-x_resp(x_resp>100)=100;
-x_resp(x_resp<-100)=-100;
+x_resp(x_resp>200)=200;
+x_resp(x_resp<-200)=-200;
 
-y_resp(y_resp>100)=100;
-y_resp(y_resp<-100)=-100;
+y_resp(y_resp>200)=200;
+y_resp(y_resp<-200)=-200;
 
-z_resp(z_resp>800)=800;
+z_resp(z_resp>600)=600;
 z_resp(z_resp<0)=0;
 
 %% Trial Exclusion X, Y, and Z
@@ -83,9 +86,14 @@ mask_x = trial_excl_vel_x~=0;
 
 for kk = 1:size(mask_x,1)
     this_trial = mask_x(kk,:);
+    if nnz(~this_trial)>600
+        note_down_excl_trial_x{kk,:} = kk;
+        continue;
+    end
+    
     transitions = diff([0; this_trial' == 0; 0]);
     runstarts = find(transitions == 1);
-    runends = find(transitions == -1); 
+    runends = find(transitions == -1);
     runlengths = runends - runstarts;
     find_trashy_run = find(runlengths>350);
     if (isempty(find_trashy_run))
@@ -93,7 +101,7 @@ for kk = 1:size(mask_x,1)
         if (isempty(find_faulty_run))
             continue;
         end
-            
+        
         time_faulty_run = runlengths(find_faulty_run);
         faulty_run_start = runstarts(find_faulty_run);
         faulty_run_end = runends(find_faulty_run);
@@ -102,12 +110,14 @@ for kk = 1:size(mask_x,1)
         end
         if(faulty_run_end+60)> runstarts(find_faulty_run+1)
             time_faulty_next = runlengths(find_faulty_run+1);
+        else
+            time_faulty_next = 0;
         end
         total_faulty_time = time_faulty_run+time_faulty_prev+time_faulty_next;
         if(total_faulty_time)>350
             note_down_excl_trial_x{kk,:} = kk;
         end
-         
+        
     else
         note_down_excl_trial_x{kk,:} = kk;
     end
@@ -120,9 +130,14 @@ mask_y = trial_excl_vel_y~=0;
 
 for kk = 1:size(mask_y,1)
     this_trial = mask_y(kk,:);
+    if nnz(~this_trial)>600
+        note_down_excl_trial_y{kk,:} = kk;
+        continue;
+    end
+    
     transitions = diff([0; this_trial' == 0; 0]);
     runstarts = find(transitions == 1);
-    runends = find(transitions == -1); 
+    runends = find(transitions == -1);
     runlengths = runends - runstarts;
     find_trashy_run = find(runlengths>350);
     if (isempty(find_trashy_run))
@@ -130,7 +145,7 @@ for kk = 1:size(mask_y,1)
         if (isempty(find_faulty_run))
             continue;
         end
-            
+        
         time_faulty_run = runlengths(find_faulty_run);
         faulty_run_start = runstarts(find_faulty_run);
         faulty_run_end = runends(find_faulty_run);
@@ -148,7 +163,7 @@ for kk = 1:size(mask_y,1)
         if(total_faulty_time)>350
             note_down_excl_trial_y{kk,:} = kk;
         end
-         
+        
     else
         note_down_excl_trial_y{kk,:} = kk;
     end
@@ -161,9 +176,14 @@ mask_z = trial_excl_vel_z~=0;
 % mask_z = mask_z';
 for kk = 1:size(mask_z,1)
     this_trial = mask_z(kk,:);
+    if nnz(~this_trial)>600
+        note_down_excl_trial_z{kk,:} = kk;
+        continue;
+    end
+    
     transitions = diff([0; this_trial' == 0; 0]);
     runstarts = find(transitions == 1);
-    runends = find(transitions == -1); 
+    runends = find(transitions == -1);
     runlengths = runends - runstarts;
     find_trashy_run = find(runlengths>350);
     if (isempty(find_trashy_run))
@@ -171,7 +191,7 @@ for kk = 1:size(mask_z,1)
         if (isempty(find_faulty_run))
             continue;
         end
-            
+        
         time_faulty_run = runlengths(find_faulty_run);
         faulty_run_start = runstarts(find_faulty_run);
         faulty_run_end = runends(find_faulty_run);
@@ -185,7 +205,7 @@ for kk = 1:size(mask_z,1)
         if(total_faulty_time)>350
             note_down_excl_trial_z{kk,:} = kk;
         end
-         
+        
     else
         note_down_excl_trial_z{kk,:} = kk;
     end
@@ -201,25 +221,25 @@ z_resp_filt = medfilt1(z_resp,20,[],2);
 % [pks_y,locs_y] = findpeaks(y_resp_filt);
 
 for ii = 1:size(z_resp_filt,1)
-[pks_z,locs_z] = findpeaks(z_resp_filt(ii,:));
-Results_peaks_z(ii).peaks = pks_z;
-Results_peaks_z(ii).locations = locs_z;
+    [pks_z,locs_z] = findpeaks(z_resp_filt(ii,:));
+    Results_peaks_z(ii).peaks = pks_z;
+    Results_peaks_z(ii).locations = locs_z;
 end
 
 for kk = 1:length(Results_peaks_z)
-temp_peaks = Results_peaks_z(kk).peaks;
-temp_locs = Results_peaks_z(kk).locations;
-indix = find(temp_peaks>500);
-for zz = 1:length(indix)
-    if (temp_locs(indix(1,zz))<4)
-        temp_locs(indix(1,zz)) = 4;
+    temp_peaks = Results_peaks_z(kk).peaks;
+    temp_locs = Results_peaks_z(kk).locations;
+    indix = find(temp_peaks>500);
+    for zz = 1:length(indix)
+        if (temp_locs(indix(1,zz))<4)
+            temp_locs(indix(1,zz)) = 4;
+        end
+        z_resp_filt(kk,temp_locs(indix(1,zz))-3:temp_locs(indix(1,zz))+40) = NaN; %Check this
     end
-    z_resp_filt(kk,temp_locs(indix(1,zz))-3:temp_locs(indix(1,zz))+40) = NaN; %Check this
-end
 end
 
 z_resp_filt = z_resp_filt(:,1:size(z_stim,2));
-clear kk temp_peaks temp_locs indixzz 
+clear kk temp_peaks temp_locs indixzz
 % z_resp_filled = fillgaps(z_resp_filt',140)';
 %z_resp_filled = fillmissing(z_resp_filt,'pchip'); %'makima',2);
 z_resp_filled = fillmissing(z_resp_filt,'linear',2,'EndValues','nearest');
@@ -230,9 +250,9 @@ z_resp_filled = fillmissing(z_resp_filt,'linear',2,'EndValues','nearest');
 fig_1 = figure('Position',[-61   242   911   744]);
 fig_ind_x = 1;
 for i = 1:3:18
-subplot(6,3,i); plot((x_stim(fig_ind_x,:)),'LineWidth',1.5);hold on; plot((x_resp_filt(fig_ind_x,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - X vs Eye Position - X',fig_ind_x));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
-legend('Ball Position','Eye Position');
-fig_ind_x = fig_ind_x + 1;
+    subplot(6,3,i); plot((x_stim(fig_ind_x,:)),'LineWidth',1.5);hold on; plot((x_resp_filt(fig_ind_x,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - X vs Eye Position - X',fig_ind_x));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
+    legend('Ball Position','Eye Position');
+    fig_ind_x = fig_ind_x + 1;
 end
 
 fig_ind_y = 1;
@@ -286,7 +306,7 @@ else
 end
 
 if (exist ('note_down_excl_trial_z','var'))
-note_down_excl_trial_z = note_down_excl_trial_z(~any(cellfun('isempty', note_down_excl_trial_z), 2), :);
+    note_down_excl_trial_z = note_down_excl_trial_z(~any(cellfun('isempty', note_down_excl_trial_z), 2), :);
 else
     note_down_excl_trial_z = {0};
 end
@@ -296,25 +316,25 @@ total_exclude_trials = [note_down_excl_trial_x;note_down_excl_trial_y;note_down_
 total_exclude_trials_unique = unique(cell2mat(total_exclude_trials));
 total_exclude_trials_unique(total_exclude_trials_unique==0)=[];
 
-%Note the position when it gets deleted. 
+%Note the position when it gets deleted.
 if (~isempty(total_exclude_trials_unique))
     for kk = 1:size(total_exclude_trials_unique,1)
-    x_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
-    x_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
-    
-    y_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
-    y_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
-    
-    z_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
-    z_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
+        x_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
+        x_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
+        
+        y_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
+        y_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
+        
+        z_resp_vel(total_exclude_trials_unique(kk),:)=NaN;
+        z_stim_vel(total_exclude_trials_unique(kk),:)=NaN;
     end
     fprintf('The following trials were faulty:\n');
-    disp(total_exclude_trials_unique); 
+    disp(total_exclude_trials_unique);
 else
     fprintf('All trials seem to be fine!\n');
 end
 
-%Remove trials with NAN. 
+%Remove trials with NAN.
 
 x_resp_vel(any(isnan(x_resp_vel), 2), :) = [];
 x_stim_vel(any(isnan(x_stim_vel), 2), :) = [];
@@ -323,14 +343,17 @@ y_stim_vel(any(isnan(y_stim_vel), 2), :) = [];
 z_resp_vel(any(isnan(z_resp_vel), 2), :) = [];
 z_stim_vel(any(isnan(z_stim_vel), 2), :) = [];
 %% Plot CCG
+try
+    for i = 1:size(x_stim_vel,1)
+        ccg_x(i,:) = xcorr(x_resp_vel(i,:),x_stim_vel(i,:),70,'coeff');
+        
+        ccg_y(i,:) = xcorr(y_resp_vel(i,:),y_stim_vel(i,:),70,'coeff');
+        
+        ccg_z(i,:) = xcorr(z_resp_vel(i,:),z_stim_vel(i,:),70,'coeff');
+    end
 
-for i = 1:size(x_stim_vel,1)
-ccg_x(i,:) = xcorr(x_resp_vel(i,:),x_stim_vel(i,:),70,'coeff');
 
-ccg_y(i,:) = xcorr(y_resp_vel(i,:),y_stim_vel(i,:),70,'coeff');
 
-ccg_z(i,:) = xcorr(z_resp_vel(i,:),z_stim_vel(i,:),70,'coeff');
-end
 
 % Average CCG
 avg_ccg_x = mean(ccg_x);
@@ -371,26 +394,26 @@ ccg_x_axis = (-70:70)/70;
 [z_gaussmodel, z_goodness] = fit(ccg_x_axis',avg_ccg_z','gauss1');
 
 %Model Fit parameters
-x_result.amp = x_gaussmodel.a1; %Amplitude
-x_result.lag = x_gaussmodel.b1; %Mean of Gaussian
-x_result.width = x_gaussmodel.c1;
-x_result.fwhm = x_gaussmodel.c1.*(2*sqrt(2*log(2)));
-x_result.adjR2 = x_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
+x_result.X_Amp = x_gaussmodel.a1; %Amplitude
+x_result.X_Lag = x_gaussmodel.b1; %Mean of Gaussian
+x_result.X_Width = x_gaussmodel.c1;
+x_result.X_FWHM = x_gaussmodel.c1.*(2*sqrt(2*log(2)));
+x_result.X_AdjR2 = x_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
 
-y_result.amp = y_gaussmodel.a1; %Amplitude
-y_result.lag = y_gaussmodel.b1; %Mean of Gaussian
-y_result.width = y_gaussmodel.c1;
-y_result.fwhm = y_gaussmodel.c1.*(2*sqrt(2*log(2)));
-y_result.adjR2 = y_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
+y_result.Y_Amp = y_gaussmodel.a1; %Amplitude
+y_result.Y_Lag = y_gaussmodel.b1; %Mean of Gaussian
+y_result.Y_Width = y_gaussmodel.c1;
+y_result.Y_FWHM = y_gaussmodel.c1.*(2*sqrt(2*log(2)));
+y_result.Y_AdjR2 = y_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
 
-z_result.amp = z_gaussmodel.a1; %Amplitude
-z_result.lag = z_gaussmodel.b1; %Mean of Gaussian
-z_result.width = z_gaussmodel.c1;
-z_result.fwhm = z_gaussmodel.c1.*(2*sqrt(2*log(2)));
-z_result.adjR2 = z_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
+z_result.Z_Amp = z_gaussmodel.a1; %Amplitude
+z_result.Z_Lag = z_gaussmodel.b1; %Mean of Gaussian
+z_result.Z_Width = z_gaussmodel.c1;
+z_result.Z_FWHM = z_gaussmodel.c1.*(2*sqrt(2*log(2)));
+z_result.Z_AdjR2 = z_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(n-1)/SST(v)] where v = n-m; SSTotal = SSRegress+SSError
 
 %% Visualize Peak, Lag and FWHM
-x_y_z_peaks = [x_result.amp;y_result.amp;z_result.amp];
+x_y_z_peaks = [x_result.X_Amp;y_result.Y_Amp;z_result.Z_Amp];
 peaks_categories = categorical({'Horizontal','Vertical','Depth'});
 fig_3 = figure('Position',[797   58   560   420]);
 peaks_bar = bar(peaks_categories,x_y_z_peaks);
@@ -401,7 +424,7 @@ peaks_bar.CData(3,:) = [0 0 1];
 ylabel('Correlation');
 title('CCG Peak');
 
-x_y_z_lags = [x_result.lag;y_result.lag;z_result.lag];
+x_y_z_lags = [x_result.X_Lag;y_result.Y_Lag;z_result.Z_Lag];
 lags_categories = categorical({'Horizontal','Vertical','Depth'});
 fig_4 = figure('Position',[1359   564   560   420]);
 lags_bar = bar(lags_categories,x_y_z_lags);
@@ -412,7 +435,7 @@ lags_bar.CData(3,:) = [0 0 1];
 ylabel('Time(s)');
 title('CCG Lag');
 
-x_y_z_fwhm = [x_result.fwhm;y_result.fwhm;z_result.fwhm];
+x_y_z_fwhm = [x_result.X_FWHM;y_result.Y_FWHM;z_result.Z_FWHM];
 fwhm_categories = categorical({'Horizontal','Vertical','Depth'});
 fig_5 = figure('Position',[1362   59   560   420]);
 fwhm_bar = bar(fwhm_categories,x_y_z_fwhm);
@@ -423,10 +446,28 @@ fwhm_bar.CData(3,:) = [0 0 1];
 ylabel('Time(s)');
 title('CCG Width (at half peak)');
 
+catch
+    fprintf('Sorry! No trials are good enough to create a cross-correlogram.\n');
+end
+
+%% Write to Table
+
+if write_Table_On
+Result_Table = cat(2,struct2table(x_result),struct2table(y_result),struct2table(z_result));
+filename = 'temp_3d_motion_vars.xlsx';
+find_subj_num = regexp(folder_response,'\d*','Match'); %Works for 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes\Results\XXX'
+subj_without_prefix = str2double(find_subj_num{1,2})+1; %Because first row is for variables; start from 2nd row
+cd 'C:\Users\User\Desktop';
+excel_row = ['J' num2str(subj_without_prefix)];
+
+writetable(Result_Table,filename,'Sheet',1,'Range',excel_row,'WriteVariableNames',false);
+%writetable(Result_Table,filename,'Sheet',1,'Range','J2','WriteVariableNames',false);
+end
+
 
 % Gabor skew curve fitting equations
 % a*exp(-((t-mu)/2*c1)^2)*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)/2*c2)^2)*sin(2*pi*w*(t-mu)).*(t<mu);
-% 
+%
 % a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
 
 
