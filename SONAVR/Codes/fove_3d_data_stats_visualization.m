@@ -3,7 +3,8 @@
 
 % Boxplots
 load motion_3d_vars_mainfeatures
-boxplot(motion_3d_mainfeatures,main_features_labels,'Notch','on');
+plotorder=[1 4 7 2 5 8 3 6 9];
+boxplot(motion_3d_mainfeatures(:,plotorder),main_features_labels(plotorder,:),'Notch','on');
 ylabel('Value');
 xlabel('CCG Features');
 title('Boxplot of all the CCG features');

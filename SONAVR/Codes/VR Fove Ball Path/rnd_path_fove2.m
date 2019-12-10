@@ -5,7 +5,7 @@
 fov = 30;
 duration_frames = 1400;
 aspect_ratio = 1.77;
-no_of_paths = 6;
+no_of_paths = 1;
 plot_On = 1;
 save_paths_On = 0;
 % z = [65:750];

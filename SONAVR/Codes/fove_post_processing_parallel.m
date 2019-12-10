@@ -7,7 +7,7 @@ addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
 write_Table_On = 0;
 
 %% Get stimulus variables
-folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder
+folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder i.e. click on VR Fove Ball Path
 cd (folder_stimulus);
 AllFiles_stimulus=dir('*.txt');
 
@@ -380,9 +380,9 @@ h_y = plot((-70:70)/70,avg_ccg_y,'LineWidth',3);
 %h_z = plot((-70:70)/70,ccg_z,'LineWidth',3,'Color',colors(3,:));
 h_z = plot((-70:70)/70,avg_ccg_z,'LineWidth',3);
 %xlim([0,1])
-xlabel('time (s)');
-ylabel('correlation value');
-title('X,Y,Z-stim CCG');
+xlabel('Time (s)');
+ylabel('Correlation value');
+title('Average Velocity Cross-Correlograms for Horizontal, Vertical, Depth');
 legend('Horizontal Component','Vertical Component', 'Depth Component');
 
 %% Gaussian Fitting - usual gaussian or skewed Gabor?
