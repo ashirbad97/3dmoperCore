@@ -31,7 +31,7 @@ eye_l = np.array((0.0,-30.0,0.0))
 eye_r = np.array ((0.0,30.0,0.0)) 
 
 # position of object 
-lookat = np.array((500.0,0.0,0.0)) 
+lookat = np.array((600.0,0.0,0.0)) 
 
 # direction between eyes 
 eye_base = normed(eye_r-eye_l)
