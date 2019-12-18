@@ -27,24 +27,24 @@ graphical_output = True
 # we assume units are mm
 
 # positions of left and right eye in the plane 
-eye_l = np.array((0.0,-30.0,0.0))
-eye_r = np.array ((0.0,30.0,0.0)) 
+eye_l = np.array((-30.0,0.0,0.0)) #eye_l = np.array((0.0,-30.0,0.0))
+eye_r = np.array ((30.0,0.0,0.0)) #eye_r = np.array ((0.0,30.0,0.0)) 
 
 # position of object 
-lookat = np.array((600.0,0.0,0.0)) 
+lookat = np.array((0.0,0.0,600.0)) #lookat = np.array((600.0,0.0,0.0)) 
 
 # direction between eyes 
 eye_base = normed(eye_r-eye_l)
 
 # up direction
 # should be orthogonal to eye_base 
-up = np.array((0.0,0.0,1.0)) 
+up = np.array((0.0,1.0,0.0)) #up = np.array((0.0,0.0,1.0))
 
 # normalized rays from eyes to object 
 ray_l = normed(lookat-eye_l)
 ray_r = normed(lookat-eye_r) 
 
-# normalized horizontal and vertical direction per eye 
+# normalized horizontal and vertical directions for the ray connecting eye to object 
 hor_l = normed(np.cross(ray_l,up))
 ver_l = np.cross(hor_l,ray_l)
 hor_r = normed(np.cross(ray_r,up))
@@ -144,10 +144,10 @@ if graphical_output :
     plt.gca().add_patch(circle) 
     plt.scatter(x,y,marker='.' ,color='r',alpha=0.02) 
     plt.axis('scaled') 
-    plt.xlim([-50,750])
-    plt.ylim([-50,50])
+    plt.xlim([-50,50])#plt.xlim([-50,750])
+    plt.ylim([-50,750])#plt.ylim([-50,50])
     plt.margins(0.2,0.2) 
-    plt.savefig('vergence.pdf', bbox_inches='tight')
+    #plt.savefig('vergence.pdf', bbox_inches='tight')
     plt.show() 
 
 
