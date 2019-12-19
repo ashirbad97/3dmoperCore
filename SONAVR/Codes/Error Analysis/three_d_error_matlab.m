@@ -25,8 +25,8 @@ hor_r = normalize(cross(ray_r,up_dir),'norm');
 ver_r = cross(hor_r,ray_r);
 
 %% Variance of Angular Deviation
-variance_l = deg2rad([0.5,0.5]);
-variance_r = deg2rad([0.5,0.5]);
+variance_l = deg2rad([1,1]); %1 degree error in horizontal and vertical for left eye
+variance_r = deg2rad([1,1]);
 
 fprintf('The positions of the Left and Right eyes are at:\n');
 fprintf(' %.2f ',pos_eye_l);
@@ -117,16 +117,26 @@ if do_plot
     
     %%3D Plot with textbook-style MATLAB Axes i.e. Y and Z reversed. Depth
     %%goes in and out of screen
-    scatter3(pos_eye_l(1,1),pos_eye_l(3,1),pos_eye_l(2,1),100, 'ok');hold on;
+    vergence_plot = scatter3(pos_eye_l(1,1),pos_eye_l(3,1),pos_eye_l(2,1),100, 'ob');hold on;
     scatter3(pos_eye_r(1,1),pos_eye_r(3,1),pos_eye_r(2,1),100, 'ok');hold on;
-    scatter3(iris_l(1,1),iris_l(3,1),iris_l(2,1),30, '.k', 'filled');hold on;
-    scatter3(iris_r(1,1),iris_r(3,1),iris_r(2,1),30, '.k', 'filled');hold on;
+%     scatter3(iris_l(1,1),iris_l(3,1),iris_l(2,1),30, '.k', 'filled');hold on;
+%     scatter3(iris_r(1,1),iris_r(3,1),iris_r(2,1),30, '.k', 'filled');hold on;
     scatter3(pos_target(1,1),pos_target(3,1),pos_target(2,1),100, 'og', 'filled');hold on;
     scatter3(x_intersect,z_intersect,y_intersect,'xr');
+    set(gca,'XLim',[-40 40],'YLim',[0 3000],'ZLim',[-40 80])
     
-    xlabel('Horizontal/X-axis');
-    ylabel('Depth/Z-Axis');
-    zlabel('Vertical/Y-Axis');
+%     set(gca,'XLim',[0 inf],'YLim',[0 inf],'ZLim',[0 inf])
+legend('Position of Left Eye','Position of Right Eye','The Target','All vergence points');
+    %legend('Position of Left Eye','Position of Right Eye','Position of Left Iris','Position of Right Iris','The Target','All vergence points');
+%     vergence_plot.YAxis.Limits = [0 3000];
+%     set(gca, 'XAxisLocation', 'origin')
+%     set(gca, 'YAxisLocation', 'origin')
+%     set(gca, 'ZAxisLocation', 'origin')
+    
+    xlabel('Horizontal/X-axis (in millimetres)');
+    ylabel('Depth/Z-Axis (in millimetres');
+    zlabel('Vertical/Y-Axis (in millimetres');
+    title('Distribution of Vergence points from eye rays distorted with zero-mean normally distributed noise');
 end
     
      

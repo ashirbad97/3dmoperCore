@@ -5,9 +5,9 @@
 fov = 30;
 duration_frames = 1400;
 aspect_ratio = 1.77;
-no_of_paths = 1;
+no_of_paths = 6;
 plot_On = 1;
-save_paths_On = 0;
+save_paths_On = 1;
 % z = [65:750];
 % start_z = 65;
 % end_z = 750;
@@ -20,7 +20,7 @@ for mm = 1:no_of_paths
     depth_vel_distribution = std_dev_z.*randn(duration_frames,1) + mean_z;
     
     %% Gaussian filter for Z
-    cutoff_z = 5; %5 Hz originally; Controls the frame-to-frame jerks
+    cutoff_z = 20; %5 Hz originally; Controls the frame-to-frame jerks; Increasing it makes it smoother
     sz = duration_frames;    % length of gaussFilter vector
     filtered_depth_vel = rizzgauss(depth_vel_distribution, cutoff_z, sz);
     depth_pos = cumsum(filtered_depth_vel);
