@@ -20,7 +20,7 @@ for mm = 1:no_of_paths
     depth_vel_distribution = std_dev_z.*randn(duration_frames,1) + mean_z;
     
     %% Gaussian filter for Z
-    cutoff_z = 20; %5 Hz originally; Controls the frame-to-frame jerks; Increasing it makes it smoother
+    cutoff_z = 40; %5 Hz originally; Controls the frame-to-frame jerks; Increasing it makes it smoother
     sz = duration_frames;    % length of gaussFilter vector
     filtered_depth_vel = rizzgauss(depth_vel_distribution, cutoff_z, sz);
     depth_pos = cumsum(filtered_depth_vel);
