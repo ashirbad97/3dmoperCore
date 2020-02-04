@@ -1,7 +1,8 @@
 %cd 'D:\Rijul\SONA VR Postprocessing\Results\001'
 %addpath 'D:\Rijul\SONA VR Postprocessing'
 clc;clear;
-addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
+%addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
+addpath 'D:\Rijul\Git Arena Delhi\VR_3D_Motion_Perception\SONAVR\Codes' % For IIT Lab Computer only
 
 %% Bunch of Switches
 write_Table_On = 0;

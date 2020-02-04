@@ -6,7 +6,7 @@ clc;clear;close all;
 pos_eye_l = [-30,0,0]';%[0,-30,0];
 pos_eye_r = [30,0,0]';%[0,30,0];
 
-pos_target = [0,0,1000]';%[600,0,0]
+pos_target = [0,0,500]';%[600,0,0]
 
 do_plot = 1;
 
@@ -25,8 +25,8 @@ hor_r = normalize(cross(ray_r,up_dir),'norm');
 ver_r = cross(hor_r,ray_r);
 
 %% Variance of Angular Deviation
-variance_l = deg2rad([10,10]); %1 degree error in horizontal and vertical for left eye
-variance_r = deg2rad([10,10]);
+variance_l = deg2rad([1,1]); %1 degree error in horizontal and vertical for left eye
+variance_r = deg2rad([1,1]);
 
 fprintf('The positions of the Left and Right eyes are at:\n');
 fprintf(' %.2f ',pos_eye_l);
