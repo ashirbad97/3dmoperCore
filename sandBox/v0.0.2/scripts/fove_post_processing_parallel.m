@@ -1,11 +1,7 @@
-%cd 'D:\Rijul\SONA VR Postprocessing\Results\001'
-%addpath 'D:\Rijul\SONA VR Postprocessing'
-clc;clear;
-%addpath 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes'
-%addpath 'D:\Rijul\Git Arena Delhi\VR_3D_Motion_Perception\SONAVR\Codes' % For IIT Lab Computer only
+function f = moper(n)
 
 %% Bunch of Switches
-write_Table_On = 0;
+    write_Table_On = n;
 
 %% Get stimulus variables
 folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder i.e. click on VR Fove Ball Path
@@ -471,6 +467,9 @@ end
 %
 % a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
 
+%%
 
 
 
+
+end
