@@ -1,17 +1,17 @@
 <deployment-project plugin="plugin.ezdeploy" plugin-version="1.0">
-  <configuration file="/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/fove_post_processing_parallel.prj" location="/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox" name="fove_post_processing_parallel" target="target.ezdeploy.standalone" target-name="Application Compiler">
-    <param.appname>fove_post_processing_parallel</param.appname>
+  <configuration file="/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/executablesAndConfigs/moperServer_v0.0.1.prj" location="/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/executablesAndConfigs" name="moperServer_v0.0.1" target="target.ezdeploy.standalone" target-name="Application Compiler">
+    <param.appname>moperServer</param.appname>
     <param.icon />
     <param.icons />
-    <param.version>1.0</param.version>
-    <param.authnamewatermark />
+    <param.version>0.0.1</param.version>
+    <param.authnamewatermark>Ashirbad Samantaray &amp; R Soans</param.authnamewatermark>
     <param.email />
     <param.company />
-    <param.summary />
+    <param.summary>v0.0.1 (as is)</param.summary>
     <param.description />
     <param.screenshot />
     <param.guid />
-    <param.installpath.string>/fove_post_processing_parallel/</param.installpath.string>
+    <param.installpath.string>/moperServer/</param.installpath.string>
     <param.installpath.combo>option.installpath.user</param.installpath.combo>
     <param.logo />
     <param.install.notes />
@@ -29,10 +29,10 @@ MR/v99/runtime/glnxa64:MR/v99/bin/glnxa64:MR/v99/sys/os/glnxa64:MR/v99/sys/openg
 If it is defined, set it to the following:
 
 ${LD_LIBRARY_PATH}:MR/v99/runtime/glnxa64:MR/v99/bin/glnxa64:MR/v99/sys/os/glnxa64:MR/v99/sys/opengl/lib/glnxa64</param.target.install.notes>
-    <param.intermediate>${PROJECT_ROOT}/fove_post_processing_parallel/for_testing</param.intermediate>
-    <param.files.only>${PROJECT_ROOT}/fove_post_processing_parallel/for_redistribution_files_only</param.files.only>
-    <param.output>${PROJECT_ROOT}/fove_post_processing_parallel/for_redistribution</param.output>
-    <param.logdir>${PROJECT_ROOT}/fove_post_processing_parallel</param.logdir>
+    <param.intermediate>${PROJECT_ROOT}/moperServer_v0.0.1/for_testing</param.intermediate>
+    <param.files.only>${PROJECT_ROOT}/moperServer_v0.0.1/for_redistribution_files_only</param.files.only>
+    <param.output>${PROJECT_ROOT}/moperServer_v0.0.1/for_redistribution</param.output>
+    <param.logdir>${PROJECT_ROOT}/moperServer_v0.0.1</param.logdir>
     <param.enable.clean.build>false</param.enable.clean.build>
     <param.user.defined.mcr.options />
     <param.target.type>subtarget.standalone</param.target.type>
@@ -58,11 +58,8 @@ ${LD_LIBRARY_PATH}:MR/v99/runtime/glnxa64:MR/v99/bin/glnxa64:MR/v99/sys/os/glnxa
     <unset>
       <param.icon />
       <param.icons />
-      <param.version />
-      <param.authnamewatermark />
       <param.email />
       <param.company />
-      <param.summary />
       <param.description />
       <param.screenshot />
       <param.guid />
@@ -92,20 +89,19 @@ ${LD_LIBRARY_PATH}:MR/v99/runtime/glnxa64:MR/v99/bin/glnxa64:MR/v99/sys/os/glnxa
       <param.example />
     </unset>
     <fileset.main>
-      <file>${PROJECT_ROOT}/fove_post_processing_parallel.m</file>
+      <file>/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/scripts/fove_post_processing_parallel.m</file>
     </fileset.main>
-    <fileset.resources>
-      <file>${PROJECT_ROOT}/VR Fove Ball Path/import_stim.m</file>
-    </fileset.resources>
+    <fileset.resources />
     <fileset.package />
     <fileset.depfun>
-      <file>${PROJECT_ROOT}/import_eyedata.m</file>
+      <file>/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/scripts/import_eyedata.m</file>
+      <file>/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/scripts/import_stim.m</file>
     </fileset.depfun>
     <build-deliverables>
-      <file location="${PROJECT_ROOT}/fove_post_processing_parallel/for_testing" name="fove_post_processing_parallel" optional="false">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/fove_post_processing_parallel/for_testing/fove_post_processing_parallel</file>
-      <file location="${PROJECT_ROOT}/fove_post_processing_parallel/for_testing" name="readme.txt" optional="true">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/fove_post_processing_parallel/for_testing/readme.txt</file>
-      <file location="${PROJECT_ROOT}/fove_post_processing_parallel/for_testing" name="run_fove_post_processing_parallel.sh" optional="false">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/fove_post_processing_parallel/for_testing/run_fove_post_processing_parallel.sh</file>
-      <file location="${PROJECT_ROOT}/fove_post_processing_parallel/for_testing" name="splash.png" optional="false">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/fove_post_processing_parallel/for_testing/splash.png</file>
+      <file location="${PROJECT_ROOT}/moperServer_v0.0.1/for_testing" name="readme.txt" optional="true">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/executablesAndConfigs/moperServer_v0.0.1/for_testing/readme.txt</file>
+      <file location="${PROJECT_ROOT}/moperServer_v0.0.1/for_testing" name="run_moperServer.sh" optional="false">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/executablesAndConfigs/moperServer_v0.0.1/for_testing/run_moperServer.sh</file>
+      <file location="${PROJECT_ROOT}/moperServer_v0.0.1/for_testing" name="splash.png" optional="false">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/executablesAndConfigs/moperServer_v0.0.1/for_testing/splash.png</file>
+      <file location="${PROJECT_ROOT}/moperServer_v0.0.1/for_testing" name="moperServer" optional="false">/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.1/executablesAndConfigs/moperServer_v0.0.1/for_testing/moperServer</file>
     </build-deliverables>
     <workflow />
     <matlab>

@@ -1,4 +1,4 @@
-fove_post_processing_parallel Executable
+moperServer Executable
 
 1. Prerequisites for Deployment 
 
@@ -23,12 +23,12 @@ in the MathWorks Documentation Center.
 
 Files to Package for Standalone 
 ================================
--fove_post_processing_parallel 
--run_fove_post_processing_parallel.sh (shell script for temporarily setting environment 
-                                       variables and executing the application)
+-moperServer 
+-run_moperServer.sh (shell script for temporarily setting environment variables and 
+                     executing the application)
    -to run the shell script, type
    
-       ./run_fove_post_processing_parallel.sh <mcr_directory> <argument_list>
+       ./run_moperServer.sh <mcr_directory> <argument_list>
        
     at Linux or Mac command prompt. <mcr_directory> is the directory 
     where version 9.9 of the MATLAB Runtime is installed or the directory where 
@@ -38,12 +38,12 @@ Files to Package for Standalone
     If you have version 9.9 of the MATLAB Runtime installed in 
     /mathworks/home/application/v99, run the shell script as:
     
-       ./run_fove_post_processing_parallel.sh /mathworks/home/application/v99
+       ./run_moperServer.sh /mathworks/home/application/v99
        
     If you have MATLAB installed in /mathworks/devel/application/matlab, 
     run the shell script as:
     
-       ./run_fove_post_processing_parallel.sh /mathworks/devel/application/matlab
+       ./run_moperServer.sh /mathworks/devel/application/matlab
 -MCRInstaller.zip
     Note: if end users are unable to download the MATLAB Runtime using the
     instructions in the previous section, include it when building your 
@@ -91,7 +91,7 @@ ${LD_LIBRARY_PATH}:MR/v99/runtime/glnxa64:MR/v99/bin/glnxa64:MR/v99/sys/os/glnxa
         NOTE: The environment variable syntax utilizes forward 
               slashes (/), delimited by colons (:).  
         NOTE: When deploying standalone applications, you can
-              run the shell script file run_fove_post_processing_parallel.sh 
+              run the shell script file run_moperServer.sh 
               instead of setting environment variables. See 
               section 2 "Files to Deploy and Package".    
 

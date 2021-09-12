@@ -30,7 +30,7 @@ else
       args="${args} \"${token}\"" 
       shift
   done
-  eval "\"${exe_dir}/fove_post_processing_parallel\"" $args
+  eval "\"${exe_dir}/moperServer\"" $args
 fi
 exit
 
