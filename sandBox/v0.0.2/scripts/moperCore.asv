@@ -1,7 +1,5 @@
  function f = moperCore(folder_stimulus_path, results_path)
-%  The path is set manually here just to make it run in the editor, will be
-%  removed in higher versions as changing paths is not good and in future
-%  the data will be fetched from the database
+ 
  cd('/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.2/')
  disp(folder_stimulus_path)
  disp(results_path)
@@ -10,10 +8,9 @@
 
 %% Get stimulus variables
 folder_stimulus = folder_stimulus_path; %Choose stimulus folder i.e. click on VR Fove Ball Path
-% For this version (v0.0.2) only manually path is being changed, will be
-% repaced by fetching the data from the database
 cd (folder_stimulus); 
 AllFiles_stimulus=dir('*.txt');
+
 x_stim = zeros(6,1400); %Allocate variables to hold stimulus data
 y_stim = zeros(6,1400);
 z_stim = zeros(6,1400);
@@ -42,9 +39,6 @@ z_stim = z_stim(any(z_stim,2),:);
 clearvars kk file_name_stimulus
 
 %% Get response variables
-% Changing Path to the original path at the starting of the code as in the
-% earlier section we had changed the path, this will be removed in the
-% future versions when db connections will be done
 cd ../../
 folder_response = results_path;%Choose a particular result folder
 cd (folder_response);
