@@ -1,45 +1,35 @@
  function f = moperCore(folder_stimulus_path, results_path)
-%  The path is set manually here just to make it run in the editor, will be
-%  removed in higher versions as changing paths is not good and in future
-%  the data will be fetched from the database
- cd('/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.2/')
- disp(folder_stimulus_path)
- disp(results_path)
+cd('/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.2/')
+%% Database Connection
+dbpath = "db/3dmoper.db";
+conn = sqlite(dbpath);
+
+fetchStimulusQueryAll = "select * from coordinates";
+results = fetch(conn,fetchStimulusQueryAll);
+% Develop a proper way of handling the data, currently hardcoded
+coordinates = results(:,2);
+
 %% Bunch of Switches
     write_Table_On = 0;
-
 %% Get stimulus variables
-folder_stimulus = folder_stimulus_path; %Choose stimulus folder i.e. click on VR Fove Ball Path
-% For this version (v0.0.2) only manually path is being changed, will be
-% repaced by fetching the data from the database
-cd (folder_stimulus); 
-AllFiles_stimulus=dir('*.txt');
-x_stim = zeros(6,1400); %Allocate variables to hold stimulus data
-y_stim = zeros(6,1400);
-z_stim = zeros(6,1400);
-
-for kk = 1:6
-    file_name_stimulus = AllFiles_stimulus(kk).name;
-    x_stim(kk,:) = import_stim(file_name_stimulus, 1, 1); %Import the X-data
+% Due to time constraint manually hard-coded the row positions of beginning
+% of x,y and z axis as 1,7 and 13, with each having 6 trials, improve this
+% in future
+j=1;
+for i = 1:6
+    x_stim(i,:) = jsondecode(cell2mat((coordinates(j)))); %Import the X-data
+    j=j+1;
 end
-
-clearvars kk file_name_stimulus
-
-for kk = 7:12
-    file_name_stimulus = AllFiles_stimulus(kk).name;
-    y_stim(kk,:) = import_stim(file_name_stimulus, 1, 1); %Import the Y-data
+j=7;
+for i = 1:6
+    y_stim(i,:) = jsondecode(cell2mat((coordinates(j)))); %Import the X-data
+    j=j+1;
 end
-y_stim = y_stim(any(y_stim,2),:);
-
-clearvars kk file_name_stimulus
-
-for kk = 13:18
-    file_name_stimulus = AllFiles_stimulus(kk).name;
-    z_stim(kk,:) = import_stim(file_name_stimulus, 1, 1); %Import the Z-data
+j=13;
+for i = 1:6
+    z_stim(i,:) = jsondecode(cell2mat((coordinates(j)))); %Import the X-data
+    j=j+1;
 end
-z_stim = z_stim(any(z_stim,2),:);
-
-clearvars kk file_name_stimulus
 
 %% Get response variables
 % Changing Path to the original path at the starting of the code as in the
