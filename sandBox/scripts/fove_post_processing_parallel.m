@@ -1,7 +1,7 @@
 function f = moper(n)
 
 %% Bunch of Switches
-    write_Table_On = n;
+    write_Table_On = 0;
 
 %% Get stimulus variables
 folder_stimulus = uigetdir(pwd,'Select the folder where stimulus paths are present'); %Choose stimulus folder i.e. click on VR Fove Ball Path
@@ -454,7 +454,7 @@ Result_Table = cat(2,struct2table(x_result),struct2table(y_result),struct2table(
 filename = 'temp_3d_motion_vars.xlsx';
 find_subj_num = regexp(folder_response,'\d*','Match'); %Works for 'E:\Rijul\UOG_Academics\Git Arena\VR_3D_Motion_Perception\SONAVR\Codes\Results\XXX'
 subj_without_prefix = str2double(find_subj_num{1,2})+1; %Because first row is for variables; start from 2nd row
-cd 'C:\Users\User\Desktop';
+cd '/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/inputPaths/001/log';
 excel_row = ['J' num2str(subj_without_prefix)];
 
 writetable(Result_Table,filename,'Sheet',1,'Range',excel_row,'WriteVariableNames',false);

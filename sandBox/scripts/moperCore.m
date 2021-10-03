@@ -1,13 +1,16 @@
- function f = moperCore(folder_stimulus_path, results_path)
-cd('/media/ashirbad97/C0B23C97B23C93BE/Ashirbad/Repos/3dmoper/sandBox/v0.0.2/')
+function f = moperCore()
 %% Database Connection
-dbpath = "db/3dmoper.db";
+dbpath = "../db/3dmoper.db";
 conn = sqlite(dbpath);
 
 fetchStimulusQueryAll = "select * from coordinates";
-results = fetch(conn,fetchStimulusQueryAll);
+resultsStimulusPaths = fetch(conn,fetchStimulusQueryAll);
+
+fetchResultCoordinatesQuery = "select * from subTrialData where trialId = '1'"; %Parameterise trialId later
+resultsfetchResultPath = fetch(conn,fetchResultCoordinatesQuery);
 % Develop a proper way of handling the data, currently hardcoded
-coordinates = results(:,2);
+coordinates = resultsStimulusPaths(:,2);
+resultcoordinates = resultsfetchResultPath
 
 %% Bunch of Switches
     write_Table_On = 0;
@@ -30,30 +33,33 @@ for i = 1:6
     z_stim(i,:) = jsondecode(cell2mat((coordinates(j)))); %Import the X-data
     j=j+1;
 end
-
+x_stim = str2double(x_stim);
+y_stim = str2double(y_stim);
+z_stim = str2double(z_stim);
 %% Get response variables
-% Changing Path to the original path at the starting of the code as in the
-% earlier section we had changed the path, this will be removed in the
-% future versions when db connections will be done
-cd ../../
-folder_response = results_path;%Choose a particular result folder
-cd (folder_response);
-AllFiles_response=dir('*.csv');
-time_sec = zeros(6,1400);
-x_resp = zeros(6,1400);
-y_resp = zeros(6,1400);
-z_resp = zeros(6,1400);
-
-for i = 1:size(AllFiles_response,1)
-    file_name_response = AllFiles_response(i).name;
-    fove_data = import_eyedata(file_name_response, [2, 1401]);
-    time_sec(i,:) = (fove_data.frameTime)';
-    x_resp(i,:) = (fove_data.eyePos3Dx)';
-    y_resp(i,:) = (fove_data.eyePos3Dy)';
-    z_resp(i,:) = (fove_data.eyePos3Dz)';
-    clear fove_data
+j=6;
+for i=1:6
+    time_sec(i,:) = jsondecode(cell2mat((resultcoordinates(i,j))));
 end
-
+%x_resp = 3
+j=3;
+for i=1:6
+    x_resp(i,:) =  jsondecode(cell2mat((resultcoordinates(i,j))));
+end
+%x_resp = 4
+j=4;
+for i=1:6
+    y_resp(i,:) =  jsondecode(cell2mat((resultcoordinates(i,j))));
+end
+%x_resp = 5
+j=5;
+for i=1:6
+    z_resp(i,:) =  jsondecode(cell2mat((resultcoordinates(i,j))));
+end
+time_sec = str2double(time_sec);
+x_resp = str2double(x_resp);
+y_resp = str2double(y_resp);
+z_resp = str2double(z_resp);
 % Clip first 2 seconds
 clip_frames = 140;
 
