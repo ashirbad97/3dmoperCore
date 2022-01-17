@@ -1,6 +1,5 @@
-function f = moperCore(trialId)
+function f = moperCore()
 %% Database Connection
-%To be changed later, here consider the trialId as sessionID of the webapp
 dbpath = "../db/3dmoper.db";
 conn = sqlite(dbpath);
 
@@ -9,10 +8,10 @@ resultsStimulusPaths = fetch(conn,fetchStimulusQueryAll);
 
 %fetchResultCoordinatesQuery = "select * from subTrialData where trialId = '1'"; %Parameterise trialId later
 %resultsfetchResultPath = fetch(conn,fetchResultCoordinatesQuery);
-resultsfetchResultPath = fetch(conn,['select * from subTrialData where trialId = ''',num2str(trialId),'''']);
+resultsfetchResultPath = fetch(conn,[]);
 % Develop a proper way of handling the data, currently hardcoded
 coordinates = resultsStimulusPaths(:,2);
-resultcoordinates = resultsfetchResultPath;
+resultcoordinates = resultsfetchResultPath
 
 %% Bunch of Switches
     write_Table_On = 0;
