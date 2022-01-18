@@ -9,7 +9,7 @@ resultsStimulusPaths = fetch(conn,fetchStimulusQueryAll);
 
 %fetchResultCoordinatesQuery = "select * from subTrialData where trialId = '1'"; %Parameterise trialId later
 %resultsfetchResultPath = fetch(conn,fetchResultCoordinatesQuery);
-resultsfetchResultPath = fetch(conn,['select * from subTrialData where trialId = ''',num2str(trialId),'''']);
+resultsfetchResultPath = fetch(conn,['select * from subTrialData where sessionId = ''',num2str(trialId),'''']);
 % Develop a proper way of handling the data, currently hardcoded
 coordinates = resultsStimulusPaths(:,2);
 resultcoordinates = resultsfetchResultPath;
@@ -252,7 +252,9 @@ z_resp_filled = fillmissing(z_resp_filt,'linear',2,'EndValues','nearest');
 
 %% Plot all the trials - For Visualization
 
-fig_1 = figure('Position',[-61   242   911   744]);
+fig_1 = figure;
+
+%fig_1 = figure('Position',[-61   242   911   744]); %Previous
 fig_ind_x = 1;
 for i = 1:3:18
     subplot(6,3,i); plot((x_stim(fig_ind_x,:)),'LineWidth',1.5);hold on; plot((x_resp_filt(fig_ind_x,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - X vs Eye Position - X',fig_ind_x));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
@@ -273,7 +275,7 @@ for i = 3:3:18
     legend('Ball Position','Eye Position');
     fig_ind_z = fig_ind_z + 1;
 end
-
+fig_1.WindowState = 'maximized';
 clear fig_ind_x fig_ind_y fig_ind_z i
 %% Start all the time series from zero amplitude
 
@@ -376,7 +378,8 @@ colors = [    0.6980    0.0941    0.1686;...
     0.4039    0.6627    0.8118;...
     0.1294    0.4000    0.6745];
 
-fig_2 = figure('Position',[795   565   560   420]);
+fig_2 = figure;
+%fig_2 = figure('Position',[795   565   560   420]);%Previous
 %h_x = plot((-70:70)/70,ccg_x,'LineWidth',3,'Color',colors(1,:));
 h_x = plot((-70:70)/70,avg_ccg_x,'LineWidth',3);
 hold on;
@@ -389,7 +392,7 @@ xlabel('Time (s)');
 ylabel('Correlation value');
 title('Average Velocity Cross-Correlograms for Horizontal, Vertical, Depth');
 legend('Horizontal Component','Vertical Component', 'Depth Component');
-
+fig_2.WindowState = 'maximized';
 %% Gaussian Fitting - usual gaussian or skewed Gabor?
 ccg_x_axis = (-70:70)/70;
 %Usual Gaussian
@@ -420,7 +423,8 @@ z_result.Z_AdjR2 = z_goodness.adjrsquare;%DOF adjusted R-Square; adjR2 = 1-[SSE(
 %% Visualize Peak, Lag and FWHM
 x_y_z_peaks = [x_result.X_Amp;y_result.Y_Amp;z_result.Z_Amp];
 peaks_categories = categorical({'Horizontal','Vertical','Depth'});
-fig_3 = figure('Position',[797   58   560   420]);
+fig_3 = figure;
+%fig_3 = figure('Position',[797   58   560   420]); %previous
 peaks_bar = bar(peaks_categories,x_y_z_peaks);
 peaks_bar.FaceColor = 'flat';
 peaks_bar.CData(1,:) = [1 0 0];
@@ -428,10 +432,12 @@ peaks_bar.CData(2,:) = [0 1 0];
 peaks_bar.CData(3,:) = [0 0 1];
 ylabel('Correlation');
 title('CCG Peak');
+fig_3.WindowState = 'maximized';
 
 x_y_z_lags = [x_result.X_Lag;y_result.Y_Lag;z_result.Z_Lag];
 lags_categories = categorical({'Horizontal','Vertical','Depth'});
-fig_4 = figure('Position',[1359   564   560   420]);
+fig_4 = figure;
+%fig_4 = figure('Position',[1359   564   560   420]);%Previous
 lags_bar = bar(lags_categories,x_y_z_lags);
 lags_bar.FaceColor = 'flat';
 lags_bar.CData(1,:) = [1 0 0];
@@ -439,10 +445,12 @@ lags_bar.CData(2,:) = [0 1 0];
 lags_bar.CData(3,:) = [0 0 1];
 ylabel('Time(s)');
 title('CCG Lag');
+fig_4.WindowState = 'maximized';
 
 x_y_z_fwhm = [x_result.X_FWHM;y_result.Y_FWHM;z_result.Z_FWHM];
 fwhm_categories = categorical({'Horizontal','Vertical','Depth'});
-fig_5 = figure('Position',[1362   59   560   420]);
+fig_5 = figure;
+%fig_5 = figure('Position',[1362   59   560   420]);%Previous
 fwhm_bar = bar(fwhm_categories,x_y_z_fwhm);
 fwhm_bar.FaceColor = 'flat';
 fwhm_bar.CData(1,:) = [1 0 0];
@@ -450,6 +458,7 @@ fwhm_bar.CData(2,:) = [0 1 0];
 fwhm_bar.CData(3,:) = [0 0 1];
 ylabel('Time(s)');
 title('CCG Width (at half peak)');
+fig_5.WindowState = 'maximized';
 
 catch
     fprintf('Sorry! No trials are good enough to create a cross-correlogram.\n');
@@ -475,9 +484,21 @@ end
 %
 % a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
 
-%%
-
-
-
-
+%% Save Plots
+dirImg = "../imgOutput";
+trialPath = string(trialId);
+dirImg = dirImg +"/"+ trialPath;
+fig_1_path = dirImg + "/" + 'fig_1.png';
+fig_2_path = dirImg + "/" + 'fig_2.png';
+fig_3_path = dirImg + "/" + 'fig_3.png';
+fig_4_path = dirImg + "/" + 'fig_4.png';
+fig_5_path = dirImg + "/" + 'fig_5.png';
+    if ~exist(dirImg, 'dir')
+       mkdir(dirImg)
+    end
+saveas(fig_1,fig_1_path);
+saveas(fig_2,fig_2_path);
+saveas(fig_3,fig_3_path);
+saveas(fig_4,fig_4_path);
+saveas(fig_5,fig_5_path);
 end
