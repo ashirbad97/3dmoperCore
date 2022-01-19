@@ -485,7 +485,7 @@ end
 % a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
 
 %% Save Plots
-dirImg = "../imgOutput";
+dirImg = "../../imgOutput";
 trialPath = string(trialId);
 dirImg = dirImg +"/"+ trialPath;
 fig_1_path = dirImg + "/" + 'fig_1.png';
