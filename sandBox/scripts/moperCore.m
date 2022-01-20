@@ -1,9 +1,10 @@
-function f = moperCore(trialId)
+function f = moperCore(trialId,dbFullPath,imgOutputFullPath)
 %% Database Connection
 %To be changed later, here consider the trialId as sessionID of the webapp
-dbpath = "../db/3dmoper.db";
+% dbpath = "../db/3dmoper.db";
+dbpath = dbFullPath;
 conn = sqlite(dbpath);
-
+disp(dbpath);
 fetchStimulusQueryAll = "select * from coordinates";
 resultsStimulusPaths = fetch(conn,fetchStimulusQueryAll);
 
@@ -485,9 +486,11 @@ end
 % a*exp(-((t-mu)^2)/(2*c1*c1))*sin(2*pi*w*(t-mu)).*(t>=mu) + a*exp(-((t-mu)^2)/(2*c2*c2))*sin(2*pi*w*(t-mu)).*(t<mu);
 
 %% Save Plots
-dirImg = "../../imgOutput";
+% dirImg = "../../imgOutput";
+dirImg = imgOutputFullPath;
 trialPath = string(trialId);
 dirImg = dirImg +"/"+ trialPath;
+disp(dirImg);
 fig_1_path = dirImg + "/" + 'fig_1.png';
 fig_2_path = dirImg + "/" + 'fig_2.png';
 fig_3_path = dirImg + "/" + 'fig_3.png';
