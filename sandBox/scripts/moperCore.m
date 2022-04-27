@@ -252,7 +252,6 @@ z_resp_filled = fillmissing(z_resp_filt,'linear',2,'EndValues','nearest');
 % z_resp_filled = fillmissing(z_resp_filt,'next'); %'makima',2);
 
 %% Plot all the trials - For Visualization
-
 fig_1 = figure;
 fig_1.Units = 'normalized';
 fig_1.Position = [0 0 1 1];
