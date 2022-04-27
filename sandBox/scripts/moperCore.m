@@ -254,29 +254,39 @@ z_resp_filled = fillmissing(z_resp_filt,'linear',2,'EndValues','nearest');
 %% Plot all the trials - For Visualization
 
 fig_1 = figure;
-
+fig_1.Units = 'normalized';
+fig_1.Position = [0 0 1 1];
 %fig_1 = figure('Position',[-61   242   911   744]); %Previous
 fig_ind_x = 1;
 for i = 1:3:18
-    subplot(6,3,i); plot((x_stim(fig_ind_x,:)),'LineWidth',1.5);hold on; plot((x_resp_filt(fig_ind_x,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - X vs Eye Position - X',fig_ind_x));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
-    legend('Ball Position','Eye Position');
+    subplot(6,3,i); plot((x_stim(fig_ind_x,:)),'LineWidth',1.5);hold on; plot((x_resp_filt(fig_ind_x,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - X vs Eye Position - X',fig_ind_x));
+    if(fig_ind_x == 3)
+        ylabel('Position (in virtual centimetres)');
+    end
     fig_ind_x = fig_ind_x + 1;
 end
-
+xlabel('No. of Frames');
 fig_ind_y = 1;
 for i = 2:3:18
-    subplot(6,3,i); plot((y_stim(fig_ind_y,:)),'LineWidth',1.5);hold on; plot((y_resp_filt(fig_ind_y,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - Y vs Eye Position - Y',fig_ind_y));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
-    legend('Ball Position','Eye Position');
+    subplot(6,3,i); plot((y_stim(fig_ind_y,:)),'LineWidth',1.5);hold on; plot((y_resp_filt(fig_ind_y,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - Y vs Eye Position - Y',fig_ind_y));
+    if(fig_ind_y == 3)
+        ylabel('Position (in virtual centimetres)');
+    end
     fig_ind_y = fig_ind_y + 1;
 end
-
+legendFig1 = legend('Ball Position','Eye Position');
+legendFig1.Position = [0.484979054059679 0.010477837778827 0.0730369158248058 0.0393919685548785];
+xlabel('No. of Frames');
 fig_ind_z = 1;
 for i = 3:3:18
-    subplot(6,3,i); plot((z_stim(fig_ind_z,:)),'LineWidth',1.5);hold on; plot((z_resp_filled(fig_ind_z,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - Z vs Eye Position - Z',fig_ind_z));xlabel('No. of Frames');ylabel('Position (in virtual centimetres)');
-    legend('Ball Position','Eye Position');
+    subplot(6,3,i); plot((z_stim(fig_ind_z,:)),'LineWidth',1.5);hold on; plot((z_resp_filled(fig_ind_z,:)),'LineWidth',1.5);title(sprintf('Trial %d : Ball Position - Z vs Eye Position - Z',fig_ind_z));
+    if(fig_ind_z == 3)
+        ylabel('Position (in virtual centimetres)');
+    end
     fig_ind_z = fig_ind_z + 1;
 end
-fig_1.WindowState = 'maximized';
+xlabel('No. of Frames');
+% fig_1.WindowState = 'maximized';
 clear fig_ind_x fig_ind_y fig_ind_z i
 %% Start all the time series from zero amplitude
 
